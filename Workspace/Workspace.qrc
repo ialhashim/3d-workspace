@@ -1,6 +1,0 @@
-<RCC>
-  <qresource prefix="Workspace">
-    <file>Resources/icons/insertObject.png</file>
-    <file>Resources/icons/newScene.ico</file>
-  </qresource>
-</RCC>

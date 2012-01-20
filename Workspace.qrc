@@ -1,0 +1,15 @@
+<RCC>
+  <qresource prefix="Workspace">
+    <file>AppIcon.ico</file>
+    <file>Resources/icons/joints.png</file>
+    <file>Resources/icons/cuboid.png</file>
+    <file>Resources/icons/gc.png</file>
+    <file>Resources/icons/remove.png</file>
+    <file>Resources/icons/newScene.png</file>
+    <file>Resources/icons/export.png</file>
+    <file>Resources/icons/insertObject.png</file>
+    <file>Resources/icons/move.png</file>
+    <file>Resources/icons/rotate.png</file>
+    <file>Resources/icons/scale.png</file>
+  </qresource>
+</RCC>
