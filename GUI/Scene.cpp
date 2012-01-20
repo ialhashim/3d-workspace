@@ -79,7 +79,7 @@ void Scene::draw()
 	this->setBackgroundColor(backColor);
 
 	// Update VBO if needed
-	updateVBOs();
+        updateVBOs();
 
 	// Draw objects using VBO
 	QMap<QString, VBO>::iterator i;

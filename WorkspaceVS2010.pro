@@ -12,10 +12,7 @@ INCLUDEPATH += ./GeneratedFiles \
     ./GeneratedFiles/Debug \
     . \
     ./GraphicsLibrary/Mesh/SurfaceMesh
-LIBS += -L"./GUI/Viewer/libQGLViewer/QGLViewer/lib" \
-    -lopengl32 \
-    -lglu32 \
-    -lQGLViewerd2
+LIBS += -lGLEW -lGLU -lGL -lQGLViewer
 PRECOMPILED_HEADER = StdAfx.h
 DEPENDPATH += .
 MOC_DIR += ./GeneratedFiles/debug

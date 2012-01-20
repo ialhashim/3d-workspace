@@ -2,6 +2,7 @@
 
 // Standard C++
 #include <stdio.h>
+#include <cstdlib>
 #include <iostream>
 #include <fstream>
 #include "limits.h"
@@ -9,13 +10,14 @@
 #include <time.h>
 #include <string>
 #include <numeric>
+#include <math.h>
 
 // GL extensions
 #ifdef _WIN32
 	#include <GL/GLee.h>
 #else
-	#include <GL/glew.h>
-	#define GLEE_ARB_vertex_buffer_object GLEW_ARB_vertex_buffer_object
+        #include <GL/glew.h>
+        #define GLEE_ARB_vertex_buffer_object GLEW_ARB_vertex_buffer_object
 #endif
 
 // Constants

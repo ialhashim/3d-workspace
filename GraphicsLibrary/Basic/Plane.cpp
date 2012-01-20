@@ -12,7 +12,7 @@ Vec3d Plane::projectionOf(const Vec3d &point)
 	}
 }
 
-int Plane::LineIntersect(const Line& l, Vec3d & result)
+int Plane::LineIntersect(Line l, Vec3d & result)
 {
 	return LineIntersect(l.a, l.b, center, result);
 }

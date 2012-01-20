@@ -106,7 +106,7 @@ public:
 
 	void projectLine(Line & line);
 
-	int LineIntersect(const Line& l, Vec3d & result = Vec3d());
+        int LineIntersect(Line l, Vec3d & result);
 	int LineIntersect(const Vec3d& start, const Vec3d& end, const Vec3d& pointOnPlane, Vec3d & result, double Epsilon = 1e-10 );
 	int ContourFacet(Vec3d a, Vec3d b, Vec3d c, Vec3d & p1, Vec3d & p2);
 

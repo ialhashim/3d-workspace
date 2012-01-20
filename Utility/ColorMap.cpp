@@ -1,6 +1,6 @@
 #include <math.h>
 #include <stdlib.h>
-#include "colormap.h"
+#include "ColorMap.h"
 
 void ColorMap::jetColorMap(unsigned char *rgb,float value,float min,float max)
 {

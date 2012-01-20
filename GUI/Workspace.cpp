@@ -69,12 +69,12 @@ void Workspace::setActiveScene(Scene* scene)
 	this->setWindowTitle(title);
 
 	// Disconnect Mesh Doc with from all scenes
-	foreach (QMdiSubWindow *window, ui.sceneArea->subWindowList()) {
+        foreach (QMdiSubWindow *window, ui.sceneArea->subWindowList()) {
 		Scene *s = qobject_cast<Scene *>(window->widget());
 		s->disconnect(mDoc);
 		s->disconnect(ui.actionExportObject);
-	}
-	
+        }
+
 	activeScene->connect(mDoc, SIGNAL(objectImported(QSegMesh*)), SLOT(setActiveObject(QSegMesh*)), Qt::UniqueConnection);
 	activeScene->connect(ui.actionExportObject, SIGNAL(triggered()), SLOT(exportActiveObject()), Qt::UniqueConnection);
 	activeScene->connect(mDoc, SIGNAL(printMessage(QString)), SLOT(print(QString)), Qt::UniqueConnection);
