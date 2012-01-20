@@ -3,7 +3,7 @@
 #include "Scene.h"
 #include "Utility/SimpleDraw.h"
 
-Scene::Scene( QWidget *parent)
+Scene::Scene( QWidget *parent) : QGLViewer(parent)
 {
 	activeMesh = NULL;
 
@@ -123,7 +123,7 @@ void Scene::updateVBOs()
 	if(mesh && mesh->isReady)
 	{
 		// Create VBO for each segment if needed
-		for (int i=0;i<mesh->nbSegments();i++)
+		for (int i=0;i<(int)mesh->nbSegments();i++)
 		{			
 			QSurfaceMesh* seg = mesh->getSegment(i);
 			QString objId = seg->objectName();
@@ -259,11 +259,13 @@ void Scene::dequeueLastMessage()
 
 void Scene::focusInEvent( QFocusEvent * event )
 {
+	event;
 	emit(gotFocus(this));
 }
 
 void Scene::closeEvent( QCloseEvent * event )
 {
+	event;
 	emit(sceneClosed(NULL));
 }
 

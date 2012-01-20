@@ -118,7 +118,7 @@ unsigned inline int fact(unsigned int n){
 }
 
 double inline gaussianFunction(double x, double mu = 0.0, double sigma = 1.0){
-	double a = 1.0 / (sigma * sqrt(2 * M_PI));
+	//double a = 1.0 / (sigma * sqrt(2 * M_PI));
 	double b = mu;
 	double c = sigma;
 

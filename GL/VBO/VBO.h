@@ -56,4 +56,5 @@ public:
 	// Rendering flags
 	bool isFlatShade;
 	RENDER_MODE	render_mode;
+	void setRenderMode(RENDER_MODE r);
 };

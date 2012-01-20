@@ -236,7 +236,7 @@ std::vector<Vec3d> Line::uniformSample( int numSamples )
 
 	result.push_back(a);
 
-	for(uint i = 1; i < numSamples; i++)
+	for(uint i = 1; i < (uint) numSamples; i++)
 		result.push_back(result.back() + delta);
 
 	return result;

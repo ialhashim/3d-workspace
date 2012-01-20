@@ -910,7 +910,7 @@ void SimpleDraw::DrawGraph2D( const StdVector< StdVector <double> > & data, doub
 
 	// Find actual data max
 	double actualMax = DBL_MIN;
-	for(int i = 0; i < data.size(); i++)
+	for(int i = 0; i < (int)data.size(); i++)
 		actualMax = Max(actualMax, MaxElement(data[i]));
 
 	uchar rgb[3];	

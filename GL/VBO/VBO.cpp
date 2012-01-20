@@ -280,3 +280,8 @@ void VBO::setDirty( bool state )
 {
 	isDirty = state;
 }
+
+void VBO::setRenderMode( RENDER_MODE r )
+{
+	this->render_mode = r;
+}

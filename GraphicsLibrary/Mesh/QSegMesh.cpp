@@ -25,7 +25,7 @@ QSegMesh::QSegMesh( const QSegMesh& from )
 	this->center = from.center;
 	this->radius = from.radius;
 
-	for (int i=0;i<from.segment.size();i++)
+	for (int i=0;i<(int)from.segment.size();i++)
 	{
 		QSurfaceMesh *seg_mesh = new QSurfaceMesh(*from.segment[i]);
 		segment.push_back(seg_mesh);
@@ -43,7 +43,7 @@ QSegMesh& QSegMesh::operator=( const QSegMesh& rhs )
 	this->center = rhs.center;
 	this->radius = rhs.radius;
 
-	for (int i=0;i<rhs.segment.size();i++)
+	for (int i=0;i<(int)rhs.segment.size();i++)
 	{
 		QSurfaceMesh *seg_mesh = new QSurfaceMesh(*rhs.segment[i]);
 		segment.push_back(seg_mesh);
@@ -161,7 +161,7 @@ void QSegMesh::read( QString fileName )
 
 		std::vector<int> faceSeg(mesh.n_faces());
 		int fid, sid;
-		for (int i=0;i<mesh.n_faces()&&inF;i++)
+		for (int i=0;i<(int)mesh.n_faces()&&inF;i++)
 		{
 			inF >> fid >> sid;	
 			faceSeg[fid] = sid;
@@ -256,7 +256,7 @@ void QSegMesh::saveObj( QString fileName )
 
 		fprintf(outF,"g %s\n", qPrintable(segment[i]->objectName()));
 
-		for(int vi = 0; vi < segFaces.size(); vi += 3)
+		for(int vi = 0; vi < (int)segFaces.size(); vi += 3)
 		{
 			uint v0 = segFaces[vi + 0], v1 = segFaces[vi + 1], v2 = segFaces[vi + 2];
 
@@ -285,7 +285,7 @@ void QSegMesh::build_up()
 	update_face_normals();
 	update_vertex_normals();
 
-	for (int i = 0; i < nbSegments();i++)
+	for (int i = 0; i < (int)nbSegments();i++)
 	{
 		segment[i]->buildUp();
 	}
@@ -299,13 +299,13 @@ void QSegMesh::build_up()
 
 void QSegMesh::update_face_normals()
 {
-	for (int i = 0; i < nbSegments();i++)
+	for (int i = 0; i < (int)nbSegments();i++)
 		segment[i]->update_face_normals();
 }
 
 void QSegMesh::update_vertex_normals()
 {
-	for (int i = 0; i < nbSegments();i++)
+	for (int i = 0; i < (int)nbSegments();i++)
 		segment[i]->update_vertex_normals();
 }
 
@@ -316,7 +316,7 @@ void QSegMesh::computeBoundingBox()
 	bbmin = Point( FLT_MAX,  FLT_MAX,  FLT_MAX);
 	bbmax = Point(-FLT_MAX, -FLT_MAX, -FLT_MAX);	
 	
-	for (int i = 0; i < nbSegments();i++)
+	for (int i = 0; i < (int)nbSegments();i++)
 	{
 		if (!segment[i]->isVisible) continue;
 
@@ -338,7 +338,7 @@ void QSegMesh::moveCenterToOrigin()
 {
 	if (!MOVE_CENTER_TO_ORIGIN) return;
 
-	for (int i = 0; i < nbSegments();i++)
+	for (int i = 0; i < (int)nbSegments();i++)
 	{
 		Surface_mesh::Vertex_property<Point> points = segment[i]->vertex_property<Point>("v:point");
 		Surface_mesh::Vertex_iterator vit, vend = segment[i]->vertices_end();
@@ -359,9 +359,11 @@ void QSegMesh::setColorVertices( double r, double g, double b, double a )
 	if(assignRandomColors)
 		randomColors = SimpleDraw::RandomColors(segment.size());
 	else
-		randomColors = std::vector<Vec4d>(nbSegments(), Vec4d(1,1,1,1));
+	{
+		randomColors = std::vector<Vec4d>(nbSegments(), Vec4d(r,g,b,a));
+	}
 
-	for (int i=0;i<segment.size();i++)
+	for (int i=0;i<(int)segment.size();i++)
 	{
 		segment[i]->setColorVertices(randomColors[i]);
 	}
@@ -398,7 +400,7 @@ std::vector<QSurfaceMesh*> QSegMesh::getSegments()
 void QSegMesh::simpleDraw( bool isColored /*= true*/, bool isDots /*= false*/ )
 {
 	// Render mesh regularly (inefficient)
-	for (int i = 0;i < segment.size(); i++)
+	for (int i = 0;i < (int)segment.size(); i++)
 	{
 		if (segment[i]->isVisible)
 			segment[i]->simpleDraw(isColored, isDots);
@@ -408,7 +410,7 @@ void QSegMesh::simpleDraw( bool isColored /*= true*/, bool isDots /*= false*/ )
 void QSegMesh::drawFacesUnique()
 {
 	uint offset = 0;
-	for (int i=0;i<segment.size();i++)
+	for (int i=0;i<(int)segment.size();i++)
 	{
 		if (segment[i]->isVisible)
 		{
@@ -420,7 +422,7 @@ void QSegMesh::drawFacesUnique()
 
 void QSegMesh::drawDebug()
 {
-	for (int i=0;i<segment.size();i++)
+	for (int i=0;i<(int)segment.size();i++)
 		segment[i]->drawDebug();
 
 	if(isDrawAABB)
@@ -433,10 +435,10 @@ void QSegMesh::setObjectName( const QString &name )
 
 	// For single objects, broken 'seg' files
 	int i = 0;
-	while(segmentName.size() < segment.size())
+	while(segmentName.size() < (int)segment.size())
 		segmentName.push_back(name + QString("-%1").arg(i++));
 
-	for (int i=0;i<segment.size();i++)
+	for (int i=0;i<(int)segment.size();i++)
 	{
 		segment[i]->setObjectName(segmentName[i]);
 	}
@@ -446,7 +448,7 @@ uint QSegMesh::nbVertices()
 {
 	uint num = 0;
 
-	for (int i=0;i<segment.size();i++)
+	for (int i=0;i<(int)segment.size();i++)
 		num += segment[i]->n_vertices();
 
 	return num;
@@ -457,7 +459,7 @@ uint QSegMesh::nbFaces()
 {
 	uint num = 0;
 
-	for (int i=0;i<segment.size();i++)
+	for (int i=0;i<(int)segment.size();i++)
 		num += segment[i]->n_faces();
 
 	return num;
@@ -472,7 +474,7 @@ std::vector<uint> QSegMesh::vertexIndicesAroundFace( uint fid )
 	std::vector<uint> vertices = segment[sid]->vertexIndicesAroundFace(fid_local);
 	uint offset = fid - fid_local;
 
-	for (int i=0;i<vertices.size();i++)
+	for (int i=0;i<(int)vertices.size();i++)
 		vertices[i] += offset;
 
 	return vertices;
@@ -484,7 +486,7 @@ void QSegMesh::global2local_fid( uint fid, uint& sid, uint& fid_local )
 
 	uint offset = 0;
 	int i=0;
-	for (;i<segment.size();i++)
+	for (;i<(int)segment.size();i++)
 	{
 
 
@@ -514,7 +516,7 @@ void QSegMesh::global2local_vid( uint vid, uint& sid, uint& vid_local )
 {
 	uint offset = 0;
 	int i=0;
-	for (;i<segment.size();i++)
+	for (;i<(int)segment.size();i++)
 	{
 		if (!segment[i]->isVisible)
 			continue;
