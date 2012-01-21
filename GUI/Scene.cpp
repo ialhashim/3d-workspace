@@ -259,17 +259,14 @@ void Scene::dequeueLastMessage()
 
 void Scene::focusInEvent( QFocusEvent * event )
 {
-	print(QString("got! (%1)").arg(event->reason()));
+	//print(QString("got! (%1)").arg(event->reason()));
 	emit(gotFocus(this));
 }
 
 void Scene::focusOutEvent( QFocusEvent * event )
 {
 	if(event->reason() != Qt::PopupFocusReason)
-	{
-		print(QString("lost focus (%1)").arg(event->reason()));
 		emit(lostFocus(this));
-	}
 }
 
 void Scene::closeEvent( QCloseEvent * event )
