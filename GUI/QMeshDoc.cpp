@@ -7,13 +7,11 @@ QMeshDoc::QMeshDoc()
 	global_id = 0;
 }
 
-
 QMeshDoc::~QMeshDoc()
 {
 	foreach (const QString id, all_objects.keys())
 		delete all_objects.value(id);
 }
-
 
 void QMeshDoc::importObject()
 {

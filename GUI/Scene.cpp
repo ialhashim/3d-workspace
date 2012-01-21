@@ -3,7 +3,7 @@
 #include "Scene.h"
 #include "Utility/SimpleDraw.h"
 
-Scene::Scene( QWidget *parent) : QGLViewer(parent)
+Scene::Scene( QWidget * parent, const QGLWidget * shareWidget, Qt::WFlags flags) : QGLViewer(parent, shareWidget, flags)
 {
 	activeMesh = NULL;
 
@@ -259,8 +259,17 @@ void Scene::dequeueLastMessage()
 
 void Scene::focusInEvent( QFocusEvent * event )
 {
-	event;
+	print(QString("got! (%1)").arg(event->reason()));
 	emit(gotFocus(this));
+}
+
+void Scene::focusOutEvent( QFocusEvent * event )
+{
+	if(event->reason() != Qt::PopupFocusReason)
+	{
+		print(QString("lost focus (%1)").arg(event->reason()));
+		emit(lostFocus(this));
+	}
 }
 
 void Scene::closeEvent( QCloseEvent * event )

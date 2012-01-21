@@ -26,7 +26,7 @@ class Scene : public QGLViewer{
 	Q_OBJECT
 
 public:
-	Scene(QWidget *parent = 0);
+	Scene(QWidget * parent = 0, const QGLWidget * shareWidget = 0, Qt::WFlags flags = 0);
 
 	// Setup scene
 	virtual void init();
@@ -55,6 +55,7 @@ public:
 
 	// Focus, close
 	virtual void focusInEvent(QFocusEvent * event);
+	virtual void focusOutEvent(QFocusEvent * event);
 	virtual void closeEvent( QCloseEvent * event );
 
 	// SELECTION
@@ -107,6 +108,7 @@ public slots:
 
 signals:
 	void gotFocus( Scene* );
+	void lostFocus( Scene* );
 	void objectInserted();
 	void exportActiveObject( QSegMesh* newMesh );
 	void sceneClosed( Scene* );

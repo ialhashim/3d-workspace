@@ -25,6 +25,8 @@ QSegMesh* TransformationPanel::activeObject()
 
 void TransformationPanel::applyRotation()
 {
+	if(!activeObject()) return;
+
 	QSegMesh * mesh = activeObject();
 
 	double xAngle = RADIANS(rotWidget.xAngle->value());

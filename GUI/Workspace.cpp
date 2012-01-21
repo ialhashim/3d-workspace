@@ -1,3 +1,4 @@
+#include "global.h"
 #include "Workspace.h"
 #include <QVBoxLayout>
 #include <QFileInfo>
@@ -12,8 +13,7 @@ Workspace::Workspace(QWidget *parent, Qt::WFlags flags)	: QMainWindow(parent, fl
 	tp = new TransformationPanel();
 	rightLayout->addWidget(tp);
 
-	// Create MeshDoc, where stores all the meshes
-	mDoc = new QMeshDoc();
+	// Connect to mesh management
 	connect(ui.actionImportObject, SIGNAL(triggered()), mDoc, SLOT(importObject()));
 
 	// Add new scene action
@@ -21,7 +21,6 @@ Workspace::Workspace(QWidget *parent, Qt::WFlags flags)	: QMainWindow(parent, fl
 
 	// Create new scene when we start by default
 	sceneCount = 0;
-	addNewScene();
 
 	leftLayout->addStretch();
 	rightLayout->addStretch();
@@ -34,7 +33,7 @@ Workspace::~Workspace()
 
 void Workspace::addNewScene()
 {
-	Scene * newScene = new Scene;
+	Scene * newScene = new Scene(this);
 
 	ui.sceneArea->addSubWindow(newScene);
 	sceneCount++;
@@ -44,18 +43,16 @@ void Workspace::addNewScene()
 
 	// Workspace window
 	connect(newScene, SIGNAL(gotFocus(Scene*)), SLOT(setActiveScene(Scene*)));
+	connect(newScene, SIGNAL(lostFocus(Scene*)), SLOT(disconnectScene(Scene*)));
 
 	// MeshDoc
 	connect(newScene, SIGNAL(objectDiscarded(QString)), mDoc, SLOT(deleteObject(QString)));
-	
+
 	// Object transformation
 	connect(newScene, SIGNAL(gotFocus(Scene*)), tp, SLOT(setActiveScene(Scene*)));
 	connect(tp, SIGNAL(objectModified()), newScene, SLOT(updateActiveObject()));
 
-	// View operations
-	connect(ui.actionCameraProjection, SIGNAL(triggered()), newScene, SLOT(toggleCameraProjection()));
-
-	this->setActiveScene(newScene);
+	setActiveScene(newScene);
 }
 
 void Workspace::setActiveScene(Scene* scene)
@@ -68,16 +65,18 @@ void Workspace::setActiveScene(Scene* scene)
 
 	this->setWindowTitle(title);
 
-	// Disconnect Mesh Doc with from all scenes
-        foreach (QMdiSubWindow *window, ui.sceneArea->subWindowList()) {
-		Scene *s = qobject_cast<Scene *>(window->widget());
-		s->disconnect(mDoc);
-		s->disconnect(ui.actionExportObject);
-        }
-
-	activeScene->connect(mDoc, SIGNAL(objectImported(QSegMesh*)), SLOT(setActiveObject(QSegMesh*)), Qt::UniqueConnection);
+	// View operations
+	connect(ui.actionCameraProjection, SIGNAL(triggered()), activeScene, SLOT(toggleCameraProjection()), Qt::UniqueConnection);
+	
+	// Connect mDoc
 	activeScene->connect(ui.actionExportObject, SIGNAL(triggered()), SLOT(exportActiveObject()), Qt::UniqueConnection);
+	activeScene->connect(mDoc, SIGNAL(objectImported(QSegMesh*)), SLOT(setActiveObject(QSegMesh*)), Qt::UniqueConnection);
 	activeScene->connect(mDoc, SIGNAL(printMessage(QString)), SLOT(print(QString)), Qt::UniqueConnection);
-
 	mDoc->connect(activeScene, SIGNAL(exportActiveObject(QSegMesh*)), SLOT(exportObject(QSegMesh*)), Qt::UniqueConnection);
+}
+
+void Workspace::disconnectScene(Scene* scene)
+{
+	mDoc->disconnect();
+	ui.actionCameraProjection->disconnect();
 }

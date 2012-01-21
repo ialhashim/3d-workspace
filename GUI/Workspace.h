@@ -20,6 +20,7 @@ public:
 public slots:
 	void addNewScene();
 	void setActiveScene(Scene* scene);
+	void disconnectScene(Scene* scene);
 
 private:
 	Ui::WorkspaceClass ui;
@@ -28,6 +29,5 @@ private:
 
 	Scene * activeScene;
 
-	QMeshDoc * mDoc;
 	int sceneCount;
 };
