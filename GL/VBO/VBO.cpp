@@ -1,6 +1,6 @@
 #include "VBO.h"
 
-VBO::VBO( unsigned int vert_count, const PointType * v, const NormalType * n, const ColorType * c, StdVector<Index> faces )
+VBO::VBO( unsigned int vert_count, const PointType * v, const NormalType * n, const ColorType * c, StdVector<uint> faces )
 {
 	vertex_vbo_id = 0;
 	Normalvbo_id = 0;
@@ -54,16 +54,18 @@ void VBO::update()
 {
 	if(this->isVBOEnabled)
 	{
-		if(indices.size() > 0)
+		if(vertices != NULL)
 		{
 			update_vbo(&vertex_vbo_id, vCount * sizeof(PointType), vertices);
-
 			if(vertex_vbo_id) isReady = true;
 
 			if(normals) update_vbo(&Normalvbo_id, vCount * sizeof(NormalType), normals);
 			if(colors) update_vbo(&color_vbo_id, vCount * sizeof(ColorType), colors);
+		}
 
-			update_ebo(&faces_id, indices.size() * sizeof(Index), &indices.front());	// ELEMENT_ARRAY case
+		if(indices.size() > 0)
+		{
+			update_ebo(&faces_id, indices.size() * sizeof(uint), &indices.front());	// ELEMENT_ARRAY case
 		}
 	}
 
@@ -71,7 +73,7 @@ void VBO::update()
 	isReady = true;
 }
 
-void VBO::update_vbo( Index *vbo, int vbo_size, const GLvoid *vbo_data )
+void VBO::update_vbo( uint *vbo, int vbo_size, const GLvoid *vbo_data )
 {
 	if(*vbo == 0)
 		glGenBuffers(1, vbo);
@@ -80,7 +82,7 @@ void VBO::update_vbo( Index *vbo, int vbo_size, const GLvoid *vbo_data )
 	glBufferData(GL_ARRAY_BUFFER, vbo_size, vbo_data, GL_STREAM_DRAW);
 }
 
-void VBO::update_ebo( Index *ebo, int ebo_size, const GLvoid *ebo_data )
+void VBO::update_ebo( uint *ebo, int ebo_size, const GLvoid *ebo_data )
 {
 	if(*ebo == 0)
 		glGenBuffers(1, ebo);
@@ -89,7 +91,7 @@ void VBO::update_ebo( Index *ebo, int ebo_size, const GLvoid *ebo_data )
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, ebo_size, ebo_data, GL_STREAM_DRAW);
 }
 
-void VBO::free_vbo( Index vbo )
+void VBO::free_vbo( uint vbo )
 {
 	glDeleteBuffers(1, &vbo);
 }

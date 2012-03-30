@@ -56,6 +56,9 @@ void free_resnode(struct res_node*);
 #define free_resnode(n)		free(n)
 #endif
 
+#undef SQ
+#define SQ(x)			((x) * (x))
+
 KDTree::KDTree(int k)
 {
 	this->tree = create(k);

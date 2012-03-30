@@ -6,8 +6,8 @@
 
 #include <cmath>
 
-#include "BoundingBox.h"
-#include "Triangle.h"
+#include "MathLibrary/Bounding/BoundingBox.h"
+#include "GraphicsLibrary/Basic/Triangle.h"
 
 typedef std::set<int> IndexSet;
 typedef IndexSet::iterator IndexSetIter;
@@ -25,13 +25,13 @@ public:
 	BoundingBox boundingBox;
 	int trianglePerNode;
 
-	Octree(){trianglePerNode = -1;}
-//	Octree(const StdVector<int> & trisIndex, Mesh * mesh, int triPerNode);
-        Octree(const StdList<BaseTriangle*>& tris, int triPerNode);
-        Octree( int triPerNode, const BoundingBox& bb, const StdVector<BaseTriangle*>& tris );
+	Octree(){trianglePerNode = -1; parent = NULL;}
+
+    Octree(StdList<BaseTriangle*>& tris, int triPerNode);
+    Octree( int triPerNode, const BoundingBox& bb, const StdVector<BaseTriangle*>& tris );
 
 	void init(int triPerNode);
-	void initBuild(const StdList<BaseTriangle*>& tris, int triPerNode );
+	void initBuild(StdList<BaseTriangle*>& tris, int triPerNode );
 
 	void newNode( int depth, double x, double y, double z );
 	void build(int depth = 0);
@@ -60,6 +60,12 @@ public:
 
 	StdVector<BaseTriangle*> getTriangleData();
 
-	void draw(double r, double g, double b);
+	Octree * parent;
+	Octree * root();
+
+	void draw(double r, double g, double b, double lineWidth = 1.0);
+
+	// Debug
+	std::vector<Octree *> selectedChildren;
 };
 

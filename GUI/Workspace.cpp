@@ -12,6 +12,9 @@ Workspace::Workspace(QWidget *parent, Qt::WFlags flags)	: QMainWindow(parent, fl
 
 	tp = new TransformationPanel();
 	rightLayout->addWidget(tp);
+	
+	mi = new MeshInfoPanel();
+	rightLayout->addWidget(mi);
 
 	// Connect to mesh management
 	connect(ui.actionImportObject, SIGNAL(triggered()), mDoc, SLOT(importObject()));
@@ -52,6 +55,8 @@ void Workspace::addNewScene()
 	connect(newScene, SIGNAL(gotFocus(Scene*)), tp, SLOT(setActiveScene(Scene*)));
 	connect(tp, SIGNAL(objectModified()), newScene, SLOT(updateActiveObject()));
 
+	connect(newScene, SIGNAL(gotFocus(Scene*)), mi, SLOT(setActiveScene(Scene*)));
+
 	setActiveScene(newScene);
 }
 
@@ -73,6 +78,10 @@ void Workspace::setActiveScene(Scene* scene)
 	activeScene->connect(mDoc, SIGNAL(objectImported(QSegMesh*)), SLOT(setActiveObject(QSegMesh*)), Qt::UniqueConnection);
 	activeScene->connect(mDoc, SIGNAL(printMessage(QString)), SLOT(print(QString)), Qt::UniqueConnection);
 	mDoc->connect(activeScene, SIGNAL(exportActiveObject(QSegMesh*)), SLOT(exportObject(QSegMesh*)), Qt::UniqueConnection);
+
+	// Set active scene
+	tp->setActiveScene(activeScene);
+	mi->setActiveScene(activeScene);
 }
 
 void Workspace::disconnectScene(Scene* scene)

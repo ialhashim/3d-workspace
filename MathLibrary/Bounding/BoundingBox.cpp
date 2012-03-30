@@ -2,7 +2,7 @@
 
 BoundingBox::BoundingBox()
 {
-	this->center = Vec3d(FLT_MIN,FLT_MIN,FLT_MIN);
+	this->center = Vec3d(0,0,0);
 
 	this->xExtent = 0;
 	this->yExtent = 0;
@@ -16,6 +16,11 @@ BoundingBox::BoundingBox( const Vec3d& c, double x, double y, double z )
 	this->xExtent = x;
 	this->yExtent = y;
 	this->zExtent = z;
+
+	Vec3d corner(x/2, y/2, z/2);
+
+	vmin = center - corner;
+	vmax = center + corner;
 }
 
 BoundingBox& BoundingBox::operator=( const BoundingBox& other )
@@ -26,13 +31,16 @@ BoundingBox& BoundingBox::operator=( const BoundingBox& other )
 	this->yExtent = other.yExtent;
 	this->zExtent = other.zExtent;
 
+	this->vmax = other.vmax;
+	this->vmin = other.vmin;
+
 	return *this;
 }
 
 void BoundingBox::computeFromTris( const StdVector<BaseTriangle*>& tris )
 {
-	Vec3d vmin (FLT_MAX, FLT_MAX, FLT_MAX);
-	Vec3d vmax (FLT_MIN, FLT_MIN, FLT_MIN);
+	vmin = Vec3d(DBL_MAX, DBL_MAX, DBL_MAX);
+	vmax = Vec3d(DBL_MIN, DBL_MIN, DBL_MIN);
 
 	double minx = 0, miny = 0, minz = 0;
 	double maxx = 0, maxy = 0, maxz = 0;
@@ -42,7 +50,7 @@ void BoundingBox::computeFromTris( const StdVector<BaseTriangle*>& tris )
 	minz = maxz = tris[0]->vec(0).z();
 
 	for (int i = 0; i < (int)tris.size(); i++)
-        {
+	{
 		for(int v = 0; v < 3; v++)
 		{
 			Vec3d vec = tris[i]->vec(v);
@@ -58,6 +66,18 @@ void BoundingBox::computeFromTris( const StdVector<BaseTriangle*>& tris )
 
 	vmax = Vec3d(maxx, maxy, maxz);
 	vmin = Vec3d(minx, miny, minz);
+
+	this->center = (vmin + vmax) / 2.0;
+
+	this->xExtent = abs(vmax.x() - center.x());
+	this->yExtent = abs(vmax.y() - center.y());
+	this->zExtent = abs(vmax.z() - center.z());
+}
+
+BoundingBox::BoundingBox( const Vec3d& fromMin, const Vec3d& toMax )
+{
+	vmin = fromMin;
+	vmax = toMax;
 
 	this->center = (vmin + vmax) / 2.0;
 
@@ -236,10 +256,29 @@ bool BoundingBox::intersectsSphere( const Vec3d& sphere_center, double radius )
 	return false;
 }
 
-
 bool BoundingBox::contains( const Vec3d& point ) const
 {
 	return abs(center.x() - point.x()) < xExtent
 		&& abs(center.y() - point.y()) < yExtent
 		&& abs(center.z() - point.z()) < zExtent;
+}
+
+Vec3d BoundingBox::Center()
+{
+	return center;
+}
+
+void BoundingBox::Offset( double s )
+{
+	Offset( Vec3d(s,s,s));
+}
+
+void BoundingBox::Offset( Vec3d delta )
+{
+	*this = BoundingBox(vmin - delta, vmax + delta);
+}
+
+double BoundingBox::Diag()
+{
+	return (vmin - vmax).norm();
 }

@@ -1,3 +1,4 @@
+#include "global.h"
 #include <QFileInfo>
 #include "Workspace.h"
 #include "Scene.h"
@@ -23,6 +24,9 @@ Scene::Scene( QWidget * parent, const QGLWidget * shareWidget, Qt::WFlags flags)
 	// Mouse selection window
 	this->setSelectRegionHeight(10);
 	this->setSelectRegionWidth(10);
+
+	emit(gotFocus(this));
+
 	displayMessage(tr("New scene created."));
 }
 
@@ -30,7 +34,7 @@ void Scene::init()
 {
 	// Options
 	this->viewMode = VIEW;
-	this->selectMode = NONE;
+	this->selectMode = SELECT_NONE;
 	this->modifyMode = DEFAULT;
 
 	// Background
@@ -78,8 +82,12 @@ void Scene::draw()
 	// Background color
 	this->setBackgroundColor(backColor);
 
+	// DEBUG
+	if (!isEmpty())	activeObject()->drawDebug();
+	//if(defCtrl) defCtrl->draw();
+
 	// Update VBO if needed
-        updateVBOs();
+    updateVBOs();
 
 	// Draw objects using VBO
 	QMap<QString, VBO>::iterator i;
@@ -90,9 +98,9 @@ void Scene::draw()
 	if(!isEmpty() && vboCollection.isEmpty())
 		activeObject()->simpleDraw();
 
-	// DEBUG
-	if (!isEmpty())	activeObject()->drawDebug();
-	//if(defCtrl) defCtrl->draw();
+	// point cloud
+	if(!isEmpty() && activeObject()->nbFaces() == 0)
+		SimpleDraw::IdentifyPoints(activeObject()->getSegment(0)->clonePoints(), Vec4d(1,1,1,1), 1.0f);
 }
 
 void Scene::drawWithNames()
@@ -102,18 +110,23 @@ void Scene::drawWithNames()
 
 void Scene::setActiveObject(QSegMesh* newMesh)
 {
-	if (!this->hasFocus()) return;
-
+	//if (!this->hasFocus()) return;
 	activeMesh = newMesh;
 
 	// Change title of scene
 	setWindowTitle(activeMesh->objectName());
 
 	// Set camera
+	resetView();
+
+	emit(gotFocus(this));
+	emit(objectInserted());
+}
+
+void Scene::resetView()
+{
 	camera()->setSceneRadius(activeMesh->radius);
 	camera()->showEntireScene();
-
-	emit(objectInserted());
 }
 
 void Scene::updateVBOs()
@@ -177,6 +190,16 @@ void Scene::keyPressEvent( QKeyEvent *e )
 {
 	// Regular behavior
 	QGLViewer::keyPressEvent(e);
+
+	if(e->key() == Qt::Key_L)
+	{	}
+
+	if(e->key() == Qt::Key_R)
+	{
+		activeObject()->computeBoundingBox();
+		resetView();
+		print("Showing scene: " + QString::number(activeObject()->radius));
+	}
 }
 
 void Scene::resizeEvent( QResizeEvent * event )
@@ -271,8 +294,13 @@ void Scene::focusOutEvent( QFocusEvent * event )
 
 void Scene::closeEvent( QCloseEvent * event )
 {
-	event;
+	// Alert others
+	this->activeMesh = NULL;
+	emit(objectInserted());
+
 	emit(sceneClosed(NULL));
+
+	event->accept();
 }
 
 QSegMesh * Scene::activeObject()

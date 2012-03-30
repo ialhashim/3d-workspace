@@ -19,6 +19,7 @@ public:
 	// LINES
 	static void IdentifyLine(const Vec3d& p1, const Vec3d& p2, bool showPoints);
 	static void IdentifyLine( const Vec3d & p1, const Vec3d & p2, Vec4d c = Vec4d(1,0,0,1), bool showVec3ds = true, float lineWidth = 3.0f );
+	static void IdentifyLines( const StdVector<Vec3d> & p1, const StdVector<Vec3d> & p2, Vec4d c = Vec4d(1,0,0,1), bool showVec3ds = true, float lineWidth = 3.0f );
 	static void IdentifyLineRed(const Vec3d& p1, const Vec3d& p2, bool showPoints = true);
 	//static void IdentifyLines(StdVector<Line> & lines, float lineWidth = 1.0, float r = 1.0, float g = 0.6f, float b = 0);
 
@@ -27,9 +28,10 @@ public:
 	// Primitives
 	static void DrawCube(const Vec3d& center, float length = 1.0);
 	static void DrawSphere(const Vec3d& center, float radius = 1.0);
+	static void DrawSpheres(StdVector<Vec3d> & centers, float radius = 1.0);
 	static void DrawCylinder(const Vec3d& center, const Vec3d& direction = Vec3d(0,0,1), float height = 1.0, float radius = 1.0, float radius2 = -1);
 
-	static void DrawBox(const Vec3d& center, float width, float length, float height, float r = 0, float g = 1.0, float b = 0);
+	static void DrawBox(const Vec3d& center, float width, float length, float height, float r = 0, float g = 1.0, float b = 0, float lineWidth = 1.0);
 	static void DrawSolidBox(const Vec3d& center, float width, float length, float height, float r = 0, float g = 1.0, float b = 0, float a = 1.0);
 	static void DrawTriangle(const Vec3d& v1, const Vec3d& v2, const Vec3d& v3,float r = 0.2f, float g = 1.0, float b = 0.1f, float a = 1.0, bool isOpaque = true);
 	static void DrawTriangles(const StdVector< StdVector<Vec3d> > & tris, float r = 0.2f, float g = 1.0, float b = 0.1f, float a = 1.0, bool isOpaque = true, bool isDrawPoints = true);
@@ -40,6 +42,9 @@ public:
 	static void DrawSquare(const std::vector<Vec3d> & v, bool isOpaque = true, float lineWidth = 1.0f, Vec4d color = Vec4d());
 	static void DrawSquares(const StdVector<StdVector<Vec3d> > & squares, bool isOpaque = true, float r = 0.1f, float g = 0.2f, float b = 1.0, float a = 1.0);
 	static void DrawLineTick(const StdVector<Vec3d>& start, const  StdVector<Vec3d>& direction, float len = 0.25f, bool border = false, float r = 0.65f, float g = 0.6f, float b = 0.8f, float a = 0.9f);
+
+	static void DrawCircle( const Vec3d& center, double radius, const Vec4d& c = Vec4d(1,1,1,1), const Vec3d& normal = Vec3d(0,0,1), float lineWidth = 2 );
+	static void DrawCircles( const StdVector<Vec3d>& centers, const StdVector<double>& radius, const Vec4d& c = Vec4d(1,1,1,1), const Vec3d& normal = Vec3d(0,0,1), float lineWidth = 2 );
 
 	// ARROWS
 	static void IdentifyArrow(const Vec3d& start, const Vec3d& end, float lineWidth = 2.0, float r = 1.0, float g = 0.2f, float b = 0.2f);

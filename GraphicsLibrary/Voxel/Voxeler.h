@@ -1,9 +1,9 @@
 #pragma once
 
-#include "QSurfaceMesh.h"
-#include "kdtree.h"
+#include "GraphicsLibrary/Mesh/QSurfaceMesh.h"
+#include "GraphicsLibrary/SpacePartition/kdtree.h"
 #include "Voxel.h"
-#include "BoundingBox.h"
+#include "MathLibrary/Bounding/BoundingBox.h"
 
 #define glv glVertex3dv
 #define gln glNormal3d
@@ -50,6 +50,8 @@ public:
 	std::vector< Point > getCorners(int vid);
 	int getClosestVoxel(Vec3d point);
 	int getEnclosingVoxel( Vec3d point );
+
+	std::vector< Point > getVoxelCenters();
 
 	std::vector< Voxel > voxels;
 	int getVoxelIndex(Voxel v);

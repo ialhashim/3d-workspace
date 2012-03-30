@@ -1,5 +1,5 @@
 #include "Octree.h"
-#include "SimpleDraw.h"
+#include "Utility/SimpleDraw.h"
 
 //Octree::Octree( const StdVector<int> & trisIndex, Mesh * mesh, int triPerNode )
 //{
@@ -11,7 +11,7 @@
 //	init(triPerNode);
 //}
 
-Octree::Octree( const StdList<BaseTriangle*>& tris, int triPerNode )
+Octree::Octree( StdList<BaseTriangle*>& tris, int triPerNode )
 {
 	for(StdList<BaseTriangle*>::const_iterator f = tris.begin(); f != tris.end(); f++)
 	{
@@ -39,9 +39,11 @@ void Octree::init( int triPerNode )
 	double largeSize = Max(bb.xExtent, Max(bb.yExtent, bb.zExtent));
 
 	this->boundingBox = BoundingBox(bb.center, largeSize, largeSize, largeSize);
+
+	parent = NULL;
 }
 
-void Octree::initBuild( const StdList<BaseTriangle*>& tris, int triPerNode )
+void Octree::initBuild( StdList<BaseTriangle*>& tris, int triPerNode )
 {
 	// add triangles involved to "triangleData"
 	this->triangleData = LIST_TO_VECTOR(tris);
@@ -59,6 +61,21 @@ void Octree::initBuild( const StdList<BaseTriangle*>& tris, int triPerNode )
 
 	// Build the tree
 	this->build();
+
+	// Connect children with parent
+	std::stack<Octree*> childStack;
+	childStack.push(this);
+	while(!childStack.empty())
+	{
+		Octree * curr = childStack.top(); childStack.pop();
+
+		for(int i = 0; i < curr->children.size(); i++)
+		{
+			curr->children[i].parent = curr;
+
+			childStack.push(&curr->children[i]);
+		}
+	}
 }
 
 void Octree::newNode( int depth, double x, double y, double z )
@@ -134,27 +151,12 @@ void Octree::build( int depth /*= 0*/ )
 	}
 }
 
-void Octree::draw( double r, double g, double b )
+void Octree::draw( double r, double g, double b, double lineWidth )
 {
-	SimpleDraw::DrawBox(boundingBox.center, boundingBox.xExtent, boundingBox.yExtent, boundingBox.zExtent,r,g,b);
+	SimpleDraw::DrawBox(boundingBox.center, boundingBox.xExtent, boundingBox.yExtent, boundingBox.zExtent,r,g,b, lineWidth);
 
 	for (StdVector<Octree>::iterator child = children.begin();  child != children.end(); child++)
-		child->draw(r,g,b);
-}
-
-bool Octree::intersectHit( IndexSet& tris )
-{
-	if(this->children.size() > 0)
-		return false;
-
-	for(StdVector<BaseTriangle*>::iterator it = triangleData.begin(); it != triangleData.end(); it++)
-	{
-		BaseTriangle * face = *it;
-
-		tris.insert( face->index );
-	}
-
-	return true;
+		child->draw(r,g,b, lineWidth);
 }
 
 IndexSet Octree::intersectPoint( const Vec3d& point )
@@ -177,6 +179,23 @@ void Octree::intersectRecursivePoint( const Vec3d& point, IndexSet& tris )
 		if (child->boundingBox.contains(point))
 			child->intersectRecursivePoint(point, tris);
 	}
+}
+
+bool Octree::intersectHit( IndexSet& tris )
+{
+	if(this->children.size() > 0)
+		return false;
+
+	for(StdVector<BaseTriangle*>::iterator it = triangleData.begin(); it != triangleData.end(); it++)
+	{
+		BaseTriangle * face = *it;
+
+		tris.insert( face->index );
+	}
+
+	root()->selectedChildren.push_back(this);
+
+	return true;
 }
 
 IndexSet Octree::intersectRay( const Ray& ray )
@@ -364,4 +383,12 @@ void Octree::testIntersectRayBoth( const Ray& ray, HitResult & hitRes )
 StdVector<BaseTriangle*> Octree::getTriangleData()
 {
 	return triangleData;
+}
+
+Octree * Octree::root()
+{
+	if(parent == NULL)
+		return this;
+	else
+		return parent->root();
 }

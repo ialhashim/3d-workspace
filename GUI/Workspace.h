@@ -8,6 +8,7 @@
 #include "QMeshDoc.h"
 #include "Scene.h"
 #include "GUI/Tools/TransformationPanel.h"
+#include "GUI/Tools/MeshInfoPanel.h"
 
 class Workspace : public QMainWindow
 {
@@ -17,17 +18,17 @@ public:
 	Workspace(QWidget *parent = 0, Qt::WFlags flags = 0);
 	~Workspace();
 
+	Ui::WorkspaceClass ui;
+	Scene * activeScene;
+
 public slots:
 	void addNewScene();
 	void setActiveScene(Scene* scene);
 	void disconnectScene(Scene* scene);
 
 private:
-	Ui::WorkspaceClass ui;
-	StackerPanel * sp;
+	MeshInfoPanel * mi;
 	TransformationPanel * tp;
-
-	Scene * activeScene;
-
+	
 	int sceneCount;
 };

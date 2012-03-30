@@ -48,9 +48,11 @@ public:
 	Point closestPointVertices(const Point & p);
 	double closestDistancePointVertices(const Point & p);
 	uint closestVertex( const Point & p );
+	Point closestPointFace(Face f, const Point & p);
 
 	std::vector<Point> clonePoints();
 	void setFromPoints(const std::vector<Point>& fromPoints);
+	void setFromNormals( const std::vector<Normal>& fromNormals );
 	std::vector< std::pair<Point, Point> > cloneEdges();
 
 	std::vector<Normal> cloneFaceNormals();
@@ -73,7 +75,7 @@ public:
 	void push( Vec3d from, Vec3d to, double falloff );
 
 	// Load the mesh from file
-	void read(const std::string& filename);
+	void read( const std::string& filename, bool isBuildUp = true);
 	void writeObj(const std::string& filename);
 
 	// Build up
@@ -98,10 +100,13 @@ public:
 	Vec3d getBaryFace( Face f, double U, double V );
 	void fillTrianglesList();
 	std::vector<unsigned int> cloneTriangleIndices();
+
 	std::vector<unsigned int> triangles, edges;
 
 	QString id;
 	bool isVisible;
+
+	std::vector<Vec3d> specialPnts;
 
 private:
 	bool isDirty;

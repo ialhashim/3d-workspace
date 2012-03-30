@@ -1,9 +1,9 @@
 // Based on jMonkeyEngine, ported from java code (New BSD License)
 #pragma once
 
-#include "Macros.h"
+#include "Utility/Macros.h"
 
-#include "Triangle.h"
+#include "GraphicsLibrary/Basic/Triangle.h"
 
 /**
 * BoundingBox defines an axis-aligned cube that defines a
@@ -17,10 +17,12 @@ class BoundingBox
 
 public:
 	Vec3d center;
+	Vec3d vmax, vmin;
 	double xExtent, yExtent, zExtent;
 
 	BoundingBox();
 	BoundingBox(const Vec3d& c, double x, double y, double z);
+	BoundingBox(const Vec3d& fromMin, const Vec3d& toMax);
 	BoundingBox& operator= (const BoundingBox& other);
 
 	void computeFromTris(const std::vector<BaseTriangle*>& tris);
@@ -34,6 +36,11 @@ public:
 	bool intersectsSphere(const Vec3d& sphere_center, double radius);
 
 	StdVector<Vec3d> getCorners();
+
+	Vec3d Center();
+	void Offset( double s );
+	void Offset( Vec3d delta );
+	double Diag();
 };
 
 /* AABB-triangle overlap test code                      */

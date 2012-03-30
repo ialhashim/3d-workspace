@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Vector.h"
+#include "Utility/Macros.h"
 
 struct HitResult{
 	bool hit;
@@ -183,10 +184,38 @@ inline Point ClosestPtPointTriangle(Point p, Point a, Point b, Point c)
 		return b + w * (c - b); // barycentric coordinates (0,1-w,w)
 	}
 	// P inside face region. Compute Q through its barycentric coordinates (u,v,w)
-	double denom = 1 / (va + vb + vc);
+	double denom = 1.0 / (va + vb + vc);
 	double v = vb * denom;
 	double w = vc * denom;
 	return a + ab * v + ac * w; // = u*a + v*b + w*c, u = va * denom = 1 - v - w
+}
+
+inline Point ClosestPtPointTriangle2(Point p, Point a,  Point b,  Point c)
+{
+	Point  ab  =  b  -  a;
+	Point  ac  =  c  -  a;
+	Point  bc  =  c  -  b;
+	double  snom  =  dot(p  -  a,  ab),  sdenom  =  dot(p  -  b,  a  -  b);
+	double  tnom  =  dot(p  -  a,  ac),  tdenom  =  dot(p  -  c,  a  -  c);
+	if  (snom  <=  0.0f  &&  tnom  <=  0.0f)  return  a;   
+	double  unom  =  dot(p  -  b,  bc),  udenom  =  dot(p  -  c,  b  -  c);
+	if  (sdenom  <=  0.0f  &&  unom  <=  0.0f)  return  b;   
+	if  (tdenom  <=  0.0f  &&  udenom  <=  0.0f)  return  c; 
+	Point  n  =  cross(b  -  a,  c  -  a);
+	double  vc  =  dot(n,  cross(a  -  p,  b  -  p));
+
+	if  (vc  <=  0.0f  &&  snom  >=  0.0f  &&  sdenom  >=  0.0f)
+		return  a  +  snom  /  (snom  +  sdenom)  *  ab;
+	double  va  =  dot(n,  cross(b  -  p,  c  -  p));
+	if  (va  <=  0.0f  &&  unom  >=  0.0f  &&  udenom  >=  0.0f)
+		return  b  +  unom  /  (unom  +  udenom)  *  bc;
+	double  vb  =  dot(n,  cross(c  -  p,  a  -  p));
+	if  (vb  <=  0.0f  &&  tnom  >=  0.0f  &&  tdenom  >=  0.0f)
+		return  a  +  tnom  /  (tnom  +  tdenom)  *  ac;
+	double  u  =  va  /  (va  +  vb  +  vc);
+	double  v  =  vb  /  (va  +  vb  +  vc);
+	double  w  =  1.0f  -  u  -  v;
+	return  u  *  a  +  v  *  b  +  w  *  c;
 }
 
 inline double distancePointTri(Point p, Point a, Point b, Point c)

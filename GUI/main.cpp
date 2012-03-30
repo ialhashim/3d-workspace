@@ -24,5 +24,7 @@ int main(int argc, char *argv[])
 	w.show();
 	w.addNewScene();
 
+	mDoc->workspace = &w;
+
 	return a.exec();
 }

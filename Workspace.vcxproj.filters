@@ -60,6 +60,21 @@
     <Filter Include="GraphicsLibrary\Basic">
       <UniqueIdentifier>{a6903603-c078-4bc9-9448-d560477f8324}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GraphicsLibrary\SpacePartition">
+      <UniqueIdentifier>{588671f5-3a7e-46ac-aaac-387349899cfa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GraphicsLibrary\Sampling">
+      <UniqueIdentifier>{409ef699-1ea3-4676-93dd-5108560d05be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math">
+      <UniqueIdentifier>{57291330-d57e-401c-afa5-04ea7e0a8a43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math\Bounding">
+      <UniqueIdentifier>{c3d06e0b-6e19-4718-9f59-cca25b0b627d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GraphicsLibrary\Voxel">
+      <UniqueIdentifier>{244a5614-2dd8-492a-becd-c7f0c89b26d2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GUI\global.h">
@@ -81,9 +96,6 @@
       <Filter>GraphicsLibrary\Mesh\SurfaceMesh</Filter>
     </ClInclude>
     <ClInclude Include="GraphicsLibrary\Mesh\SurfaceMesh\Vector.h">
-      <Filter>GraphicsLibrary\Mesh\SurfaceMesh</Filter>
-    </ClInclude>
-    <ClInclude Include="GraphicsLibrary\Mesh\SurfaceMesh\IO.h">
       <Filter>GraphicsLibrary\Mesh\SurfaceMesh</Filter>
     </ClInclude>
     <ClInclude Include="Utility\Macros.h">
@@ -134,6 +146,45 @@
     <ClInclude Include="resource2.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
+    <ClInclude Include="GraphicsLibrary\Mesh\SurfaceMesh\IO_.h">
+      <Filter>GraphicsLibrary\Mesh\SurfaceMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsLibrary\Sampling\Sampler.h">
+      <Filter>GraphicsLibrary\Sampling</Filter>
+    </ClInclude>
+    <ClInclude Include="MathLibrary\Bounding\BoundingBox.h">
+      <Filter>Math\Bounding</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsLibrary\Sampling\RegularRecursive.h">
+      <Filter>GraphicsLibrary\Sampling</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsLibrary\SpacePartition\Octree.h">
+      <Filter>GraphicsLibrary\SpacePartition</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsLibrary\Basic\Triangle.h">
+      <Filter>GraphicsLibrary\Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsLibrary\Sampling\SliceSampling.h">
+      <Filter>GraphicsLibrary\Sampling</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsLibrary\Sampling\VoxelSampling.h">
+      <Filter>GraphicsLibrary\Sampling</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsLibrary\Voxel\Voxel.h">
+      <Filter>GraphicsLibrary\Voxel</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsLibrary\Voxel\Voxeler.h">
+      <Filter>GraphicsLibrary\Voxel</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsLibrary\Sampling\SpherePackSampling.h">
+      <Filter>GraphicsLibrary\Sampling</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsLibrary\Sampling\EdgeSampler.h">
+      <Filter>GraphicsLibrary\Sampling</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_MeshInfo.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="GUI\QMeshDoc.h">
@@ -162,6 +213,12 @@
     </CustomBuild>
     <CustomBuild Include="Workspace.qrc">
       <Filter>Resource Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="GUI\Tools\MeshInfo.ui">
+      <Filter>GUI\Tools</Filter>
+    </CustomBuild>
+    <CustomBuild Include="GUI\Tools\MeshInfoPanel.h">
+      <Filter>GUI\Tools</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
@@ -219,9 +276,6 @@
     <ClCompile Include="GraphicsLibrary\Mesh\SurfaceMesh\Surface_mesh.cpp">
       <Filter>GraphicsLibrary\Mesh\SurfaceMesh</Filter>
     </ClCompile>
-    <ClCompile Include="GraphicsLibrary\Mesh\SurfaceMesh\IO.cpp">
-      <Filter>GraphicsLibrary\Mesh\SurfaceMesh</Filter>
-    </ClCompile>
     <ClCompile Include="GraphicsLibrary\Mesh\SurfaceMesh\IO_obj.cpp">
       <Filter>GraphicsLibrary\Mesh\SurfaceMesh</Filter>
     </ClCompile>
@@ -263,6 +317,36 @@
     </ClCompile>
     <ClCompile Include="GeneratedFiles\qrc_Workspace.cpp">
       <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicsLibrary\Mesh\SurfaceMesh\IO_.cpp">
+      <Filter>GraphicsLibrary\Mesh\SurfaceMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicsLibrary\SpacePartition\kdtree.cpp">
+      <Filter>GraphicsLibrary\SpacePartition</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicsLibrary\Sampling\Sampler.cpp">
+      <Filter>GraphicsLibrary\Sampling</Filter>
+    </ClCompile>
+    <ClCompile Include="MathLibrary\Bounding\BoundingBox.cpp">
+      <Filter>Math\Bounding</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicsLibrary\SpacePartition\Octree.cpp">
+      <Filter>GraphicsLibrary\SpacePartition</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicsLibrary\Basic\Triangle.cpp">
+      <Filter>GraphicsLibrary\Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicsLibrary\Voxel\Voxeler.cpp">
+      <Filter>GraphicsLibrary\Voxel</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI\Tools\MeshInfoPanel.cpp">
+      <Filter>GUI\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_MeshInfoPanel.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_MeshInfoPanel.cpp">
+      <Filter>Generated Files\Release</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

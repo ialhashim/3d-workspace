@@ -8,7 +8,6 @@
 typedef Vec3d PointType;
 typedef Vec3d NormalType;
 typedef Vec4d ColorType;
-typedef uint Index;
 
 enum RENDER_MODE{ RENDER_WIREFRAME, RENDER_POINT, RENDER_REGULAR};
 
@@ -26,19 +25,19 @@ public:
 	const PointType * vertices;
 	const NormalType * normals;
 	const ColorType * colors;
-	StdVector<Index> indices;
+	StdVector<uint> indices;
 
 	VBO(){ isVBOEnabled = false; isDirty = false; isReady = false; };
-	VBO( unsigned int vert_count, const PointType * v, const NormalType * n, const ColorType * c, StdVector<Index> faces );
+	VBO( unsigned int vert_count, const PointType * v, const NormalType * n, const ColorType * c, StdVector<uint> faces );
 
-	void free_vbo(Index vbo);
+	void free_vbo(uint vbo);
 	~VBO();
 
 	static bool isVBOSupported();
 
 	void update();
-	void update_vbo(Index *vbo, int vbo_size, const GLvoid *vbo_data);
-	void update_ebo(Index *ebo, int ebo_size, const GLvoid *ebo_data);
+	void update_vbo(uint *vbo, int vbo_size, const GLvoid *vbo_data);
+	void update_ebo(uint *ebo, int ebo_size, const GLvoid *ebo_data);
 
 	// Rendering Vertex Buffer Object (VBO)
 	void render_regular(bool dynamic = false);

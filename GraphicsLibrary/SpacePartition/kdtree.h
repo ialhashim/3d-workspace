@@ -58,8 +58,6 @@ struct kdres {
 	int size;
 };
 
-#define SQ(x)			((x) * (x))
-
 #include <float.h>
 #define kdEpsilon			DBL_EPSILON
 

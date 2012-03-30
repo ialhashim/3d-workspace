@@ -8,12 +8,15 @@
 #include <QVector>
 #include "Utility/SimpleDraw.h"
 
+int turnOffSegments = 0;
+
 QSegMesh::QSegMesh()
 {
 	isReady = false;
 	isDrawAABB = false;
 	controller = NULL;
 	upVec = Vec3d(0,0,1);
+	radius = 1.0;
 }
 
 QSegMesh::QSegMesh( const QSegMesh& from )
@@ -133,7 +136,8 @@ void QSegMesh::read( QString fileName )
 	// Load segmentation file
 	std::ifstream inF(qPrintable(segFilename), std::ios::in);
 
-	if (!inF)
+	//if (mesh.n_faces() < 1 || !inF)
+	if(turnOffSegments)
 	{
 		// Unsegmented mesh
 		segment.push_back(new QSurfaceMesh(mesh));
@@ -142,6 +146,8 @@ void QSegMesh::read( QString fileName )
 	{
 		int nbSeg;
 		inF >> nbSeg;
+
+		nbSeg = Max(1, nbSeg);
 
 		segmentName.clear();
 		std::string str;
@@ -176,7 +182,7 @@ void QSegMesh::read( QString fileName )
 
 
 		// Create unique vertex set for each segment
-                std::vector< std::set <Surface_mesh::Vertex> > segVertices(nbSeg);
+        std::vector< std::set <Surface_mesh::Vertex> > segVertices(nbSeg);
 		Surface_mesh::Face_iterator fit, fend = mesh.faces_end();
 		Surface_mesh::Vertex_around_face_circulator fvit;	
 
@@ -192,7 +198,7 @@ void QSegMesh::read( QString fileName )
 		}
 
 		// Add Vertices to each segment	
-                std::vector< std::map <Surface_mesh::Vertex, Surface_mesh::Vertex> > segVerMap(nbSeg);
+        std::vector< std::map <Surface_mesh::Vertex, Surface_mesh::Vertex> > segVerMap(nbSeg);
 		Surface_mesh::Vertex_property<Point>  points   = mesh.vertex_property<Point>("v:point");
 
 		for (int i=0;i<nbSeg;i++)

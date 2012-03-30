@@ -1,6 +1,7 @@
 #include "QSurfaceMesh.h"
 #include "IO.h"
 
+#include "GraphicsLibrary/SpacePartition/Intersection.h"
 #include "Utility/SimpleDraw.h"
 #include <QMap>
 
@@ -19,6 +20,7 @@ QSurfaceMesh::QSurfaceMesh() : Surface_mesh()
 	upVec = Vec3d(0,0,1);
 
 	averageEdgeLength = -1;
+	radius = 1.0;
 }
 
 QSurfaceMesh::QSurfaceMesh( const QSurfaceMesh& from ) : Surface_mesh(from)
@@ -137,6 +139,9 @@ void QSurfaceMesh::drawDebug()
 	foreach(std::vector<Point> line, debug_lines) SimpleDraw::IdentifyConnectedPoints(line, 1.0,0,0);
 	foreach(std::vector<Point> line, debug_lines2) SimpleDraw::IdentifyConnectedPoints(line, 0,1.0,0);
 	foreach(std::vector<Point> line, debug_lines3) SimpleDraw::IdentifyConnectedPoints(line, 0,0,1.0);
+
+	// Special points
+	SimpleDraw::IdentifyPoints(specialPnts, Vec4d(0,1,1,1), 4);
 }
 
 void QSurfaceMesh::simpleDrawWireframe()
@@ -459,26 +464,26 @@ Vec3d QSurfaceMesh::getBaryFace( Face f, double U, double V )
 {
 	std::vector<Vec3d> v = facePoints(f);
 
-	//if(U == 1.0) return v[1];
-	//if(V == 1.0) return v[2];
+	if(U == 1.0) return v[1];
+	if(V == 1.0) return v[2];
 
-	//double b1 = U;
-	//double b2 = V;
-	//double b3 = 1.0 - (U + V);
+	double b1 = U;
+	double b2 = V;
+	double b3 = 1.0 - (U + V);
 
-	//Vec3d p;
+	Vec3d p;
 
-	//p.x() = (b1 * v[0].x()) + (b2 * v[1].x()) + (b3 * v[2].x());
-	//p.y() = (b1 * v[0].y()) + (b2 * v[1].y()) + (b3 * v[2].y());
-	//p.z() = (b1 * v[0].z()) + (b2 * v[1].z()) + (b3 * v[2].z());
+	p.x() = (b1 * v[0].x()) + (b2 * v[1].x()) + (b3 * v[2].x());
+	p.y() = (b1 * v[0].y()) + (b2 * v[1].y()) + (b3 * v[2].y());
+	p.z() = (b1 * v[0].z()) + (b2 * v[1].z()) + (b3 * v[2].z());
 
 	// Generate uniform sample in a triangle
-	double sqrtV = sqrt(V);
+	/*double sqrtV = sqrt(V);
 	double w0 = (1 - U) * sqrtV;
 	double w1 = U * sqrtV;
 	double w2 = 1 - sqrtV;
 
-	Vec3d p = w0 * v[0] + w1 * v[1] + w2 * v[2];
+	Vec3d p = w0 * v[0] + w1 * v[1] + w2 * v[2];*/
 
 	return p;
 }
@@ -497,11 +502,12 @@ Vec3d QSurfaceMesh::faceCenter( Face f )
 		(v[0].z() + v[1].z() + v[2].z()) / 3.0);
 }
 
-void QSurfaceMesh::read( const std::string& filename )
+void QSurfaceMesh::read( const std::string& filename, bool isBuildUp )
 {
 	Surface_mesh::read(filename);
 
-	buildUp();
+	if(isBuildUp)
+		buildUp();
 }
 
 void QSurfaceMesh::writeObj( const std::string& filename )
@@ -623,6 +629,15 @@ void QSurfaceMesh::setFromPoints( const std::vector<Point>& fromPoints )
 
 	for(vit = vertices_begin(); vit != vend; ++vit)
 		points[vit] = fromPoints[Vertex(vit).idx()];
+}
+
+void QSurfaceMesh::setFromNormals( const std::vector<Normal>& fromNormals )
+{
+	Vertex_property<Normal>  normals  = vertex_property<Normal>("v:normal");
+	Vertex_iterator vit, vend = vertices_end();
+
+	for(vit = vertices_begin(); vit != vend; ++vit)
+		normals[vit] = fromNormals[Vertex(vit).idx()];
 }
 
 std::set<uint> QSurfaceMesh::vertexIndicesAroundVertex( const Vertex& v )
@@ -810,4 +825,11 @@ void QSurfaceMesh::push( Vec3d from, Vec3d to, double falloff )
 		// Move vertices:
 		points[v] += delta * gaussianFunction(weights[v], 0, sigma);
 	}
+}
+
+Point QSurfaceMesh::closestPointFace( Face f, const Point & p )
+{
+	std::vector<Point> pnts = facePoints(f);
+
+	return ClosestPtPointTriangle(p, pnts[0], pnts[1], pnts[2]);
 }

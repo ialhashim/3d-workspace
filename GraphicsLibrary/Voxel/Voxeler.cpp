@@ -1,6 +1,6 @@
 #include "Voxeler.h"
-#include "SimpleDraw.h"
-#include "Stats.h"
+#include "Utility/SimpleDraw.h"
+#include "Utility/Stats.h"
 
 Voxeler::Voxeler( QSurfaceMesh * src_mesh, double voxel_size, bool verbose /*= false*/ )
 {
@@ -475,4 +475,16 @@ int Voxeler::getVoxelIndex( Voxel v )
 	}
 
 	return -1;
+}
+
+std::vector< Point > Voxeler::getVoxelCenters()
+{
+	std::vector< Point > pnts;
+
+	for(int i = 0; i < voxels.size(); i++){
+		Voxel w = voxels[i];
+		pnts.push_back(Point(w.x * voxelSize, w.y* voxelSize, w.z* voxelSize) );
+	}
+
+	return pnts;
 }

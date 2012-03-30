@@ -12,12 +12,9 @@ using namespace qglviewer;
 #include "GL/VBO/VBO.h"
 #include "GraphicsLibrary/Mesh/QSegMesh.h"
 
-class Offset;
-class StackerPanel;
-
 enum ViewMode { VIEW, SELECTION, MODIFY };
 enum ModifyMode { DEFAULT, CP_REF_VECTOR, MOVE_VERTEX };
-enum SelectMode { NONE, MESH, SKELETON_NODE, SKELETON_EDGE, 
+enum SelectMode { SELECT_NONE, MESH, SKELETON_NODE, SKELETON_EDGE, 
 	SKELETON_FACES, RECONSTRUCTED_POINTS, VERTEX, 
 	CONTROLLER, CONTROLLER_ELEMENT, FFD_DEFORMER,VOXEL_DEFORMER};
 
@@ -105,6 +102,7 @@ public slots:
 	void updateActiveObject();
 	void exportActiveObject();
 	void toggleCameraProjection();
+	void resetView();
 
 signals:
 	void gotFocus( Scene* );

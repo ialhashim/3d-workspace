@@ -1,7 +1,6 @@
 #pragma once
 
-#include "QSurfaceMesh.h"
-#include "QSegMesh.h"
+#include "GraphicsLibrary/Mesh/QSegMesh.h"
 
 // Helper structures
 struct SamplePoint{

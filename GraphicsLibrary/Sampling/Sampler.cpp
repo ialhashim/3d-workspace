@@ -1,8 +1,8 @@
 #include "Sampler.h"
 
-#include "SimpleDraw.h"
-#include "Stats.h"
-#include "ColorMap.h"
+#include "Utility/SimpleDraw.h"
+#include "Utility/Stats.h"
+#include "Utility/ColorMap.h"
 
 
 Sampler::Sampler(QSurfaceMesh * srcMesh, SamplingMethod samplingMethod)
@@ -61,11 +61,13 @@ Sampler::Sampler(QSurfaceMesh * srcMesh, SamplingMethod samplingMethod)
 SamplePoint Sampler::getSample(double weight)
 {
 	SamplePoint sp;
+	double r;
+	double b[3];
 
 	if( method == RANDOM_BARYCENTRIC )
 	{
 		// r, random point in the area
-		double r = uniform();
+		r = uniform();
 
 		// Find corresponding face
 		StdVector<AreaFace>::iterator it = lower_bound(interval.begin(), interval.end(), AreaFace(Min(r,interval.back().area)));
@@ -73,7 +75,7 @@ SamplePoint Sampler::getSample(double weight)
 		uint face_id = face.idx();
 
 		// Add sample from that face
-		double b[3]; RandomBaricentric(b);
+		RandomBaricentric(b);
 
 		sp = SamplePoint( mesh->getBaryFace(face, b[0], b[1]), mesh->fn(face), weight, face_id, b[0], b[1]);
 	}
@@ -93,7 +95,7 @@ SamplePoint Sampler::getSample(double weight)
 		Vec3d triCenter = mesh->faceCenter(tri);
 		Vec3d triNor = *mesh->fn(tri);
 
-		sp = SamplePoint(triCenter, triNor, mesh->faceArea(tri), tri_id);
+		sp = SamplePoint(triCenter, triNor, mesh->faceArea(tri), tri_id, 1 / 3.0, 1 / 3.0);
 	}
 
 	return sp;
@@ -101,11 +103,11 @@ SamplePoint Sampler::getSample(double weight)
 
 StdVector<SamplePoint> Sampler::getSamples(int numberSamples, double weight)
 {
-	StdVector<SamplePoint> samples;
+	StdVector<SamplePoint> samples(numberSamples);
 
 	for(int i = 0; i < numberSamples; i++)
 	{
-		samples.push_back( getSample(weight) );
+		samples[i] = getSample(weight);
 	}
 
 	return samples;
