@@ -25,6 +25,7 @@ public slots:
 	void addNewScene();
 	void setActiveScene(Scene* scene);
 	void disconnectScene(Scene* scene);
+	void sceneClosed(Scene* scene);
 
 private:
 	MeshInfoPanel * mi;

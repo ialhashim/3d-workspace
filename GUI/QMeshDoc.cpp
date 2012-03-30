@@ -3,11 +3,9 @@
 #include <QFileDialog>
 #include "Workspace.h"
 
-QMeshDoc::QMeshDoc()
+QMeshDoc::QMeshDoc( QObject * parent ) : QObject(parent)
 {
 	global_id = 0;
-
-	workspace = NULL;
 }
 
 QMeshDoc::~QMeshDoc()
@@ -18,6 +16,8 @@ QMeshDoc::~QMeshDoc()
 
 void QMeshDoc::importObject()
 {
+	Workspace * workspace = (Workspace *) parent();
+
 	if(workspace->activeScene == NULL) return;
 
 	QString fileName = QFileDialog::getOpenFileName(0, "Import Mesh", DEFAULT_FILE_PATH, "Mesh Files (*.obj *.off *.stl)"); 
@@ -48,37 +48,10 @@ void QMeshDoc::importObject()
 
 	// Focus active scene
 	workspace->activeScene->setFocus();
-
-	emit(printMessage(newObjId + " has been imported."));
-	emit(objectImported(newMesh));
-
+	workspace->activeScene->print(newObjId + " has been imported.");
+	workspace->activeScene->setActiveObject(newMesh);
+	
 	DEFAULT_FILE_PATH = QFileInfo(fileName).absolutePath();
-}
-
-QString QMeshDoc::loadFile(QString fileName)
-{
-	QFileInfo fInfo (fileName);
-
-	QString newObjId = fInfo.fileName();
-	newObjId.chop(4);
-	global_id++;
-	newObjId += QString("-%1").arg(global_id);
-
-	// Create a new QSegMesh
-	QSegMesh * newMesh = new QSegMesh();
-	all_objects[ newObjId ] = newMesh;
-
-	// Reading QSegMesh
-	newMesh->read(fileName);
-
-	// Set global ID for the mesh and all its segments
-	newMesh->setObjectName(newObjId);
-
-	emit(objectImported(newMesh));
-	emit(printMessage(newObjId+" has been imported."));
-
-	return newObjId;
-
 }
 
 QSegMesh * QMeshDoc::getObject( QString objectId )

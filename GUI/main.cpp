@@ -16,15 +16,11 @@ int main(int argc, char *argv[])
 	glf.setSamples(8);
 	QGLFormat::setDefaultFormat(glf);
 
-	// Create MeshDoc, which stores all the meshes
-	mDoc = new QMeshDoc();
-
+	// Create main window
 	Workspace w;
 	w.move(QApplication::desktop()->availableGeometry().center() - w.rect().center());
 	w.show();
 	w.addNewScene();
-
-	mDoc->workspace = &w;
 
 	return a.exec();
 }

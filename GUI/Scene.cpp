@@ -25,6 +25,8 @@ Scene::Scene( QWidget * parent, const QGLWidget * shareWidget, Qt::WFlags flags)
 	this->setSelectRegionHeight(10);
 	this->setSelectRegionWidth(10);
 
+	// Take focus
+	this->setFocus();
 	emit(gotFocus(this));
 
 	displayMessage(tr("New scene created."));
@@ -298,7 +300,7 @@ void Scene::closeEvent( QCloseEvent * event )
 	this->activeMesh = NULL;
 	emit(objectInserted());
 
-	emit(sceneClosed(NULL));
+	emit(sceneClosed(this));
 
 	event->accept();
 }

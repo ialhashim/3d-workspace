@@ -16,7 +16,7 @@ QSegMesh::QSegMesh()
 	isDrawAABB = false;
 	upVec = Vec3d(0,0,1);
 	radius = 1.0;
-}
+}3
 
 QSegMesh::QSegMesh( const QSegMesh& from )
 {
@@ -135,8 +135,7 @@ void QSegMesh::read( QString fileName )
 	// Load segmentation file
 	std::ifstream inF(qPrintable(segFilename), std::ios::in);
 
-	//if (mesh.n_faces() < 1 || !inF)
-	if(turnOffSegments)
+	if (turnOffSegments || mesh.n_faces() < 1 || !inF)
 	{
 		// Unsegmented mesh
 		segment.push_back(new QSurfaceMesh(mesh));
@@ -146,96 +145,99 @@ void QSegMesh::read( QString fileName )
 		int nbSeg;
 		inF >> nbSeg;
 
-		nbSeg = Max(1, nbSeg);
-
-		segmentName.clear();
-		std::string str;
-		inF >> str;
-		if (str == "labels")
+		if(nbSeg == 0)
+			segment.push_back(new QSurfaceMesh(mesh)); // non-segmented / point cloud?
+		else
 		{
+			nbSeg = Max(1, nbSeg);
+
+			segmentName.clear();
+			std::string str;
+			inF >> str;
+			if (str == "labels")
+			{
+				for (int i=0;i<nbSeg;i++)
+				{
+					inF >> str;
+					segmentName.push_back(str.c_str());
+				}
+			}
+			else
+			{// Fall back
+				inF.seekg(-(int)str.size(), std::ios::cur);
+			}
+
+			std::vector<int> faceSeg(mesh.n_faces());
+			int fid, sid;
+			for (int i=0;i<(int)mesh.n_faces()&&inF;i++)
+			{
+				inF >> fid >> sid;	
+				faceSeg[fid] = sid;
+			}
+			inF.close();
+
+			// Create segments
 			for (int i=0;i<nbSeg;i++)
 			{
-				inF >> str;
-				segmentName.push_back(str.c_str());
+				segment.push_back(new QSurfaceMesh());
 			}
-		}
-		else
-		{// Fall back
-			inF.seekg(-(int)str.size(), std::ios::cur);
-		}
-
-		std::vector<int> faceSeg(mesh.n_faces());
-		int fid, sid;
-		for (int i=0;i<(int)mesh.n_faces()&&inF;i++)
-		{
-			inF >> fid >> sid;	
-			faceSeg[fid] = sid;
-		}
-		inF.close();
-
-		// Create segments
-		for (int i=0;i<nbSeg;i++)
-		{
-			segment.push_back(new QSurfaceMesh());
-		}
 
 
-		// Create unique vertex set for each segment
-        std::vector< std::set <Surface_mesh::Vertex> > segVertices(nbSeg);
-		Surface_mesh::Face_iterator fit, fend = mesh.faces_end();
-		Surface_mesh::Vertex_around_face_circulator fvit;	
+			// Create unique vertex set for each segment
+			std::vector< std::set <Surface_mesh::Vertex> > segVertices(nbSeg);
+			Surface_mesh::Face_iterator fit, fend = mesh.faces_end();
+			Surface_mesh::Vertex_around_face_circulator fvit;	
 
-		for (fit = mesh.faces_begin(); fit!=fend; ++fit)
-		{
-			Surface_mesh::Face f = fit;
-			int sid = faceSeg[f.idx()];
-
-			fvit = mesh.vertices(fit);	
-			segVertices[sid].insert(fvit);
-			segVertices[sid].insert(++fvit);
-			segVertices[sid].insert(++fvit);
-		}
-
-		// Add Vertices to each segment	
-        std::vector< std::map <Surface_mesh::Vertex, Surface_mesh::Vertex> > segVerMap(nbSeg);
-		Surface_mesh::Vertex_property<Point>  points   = mesh.vertex_property<Point>("v:point");
-
-		for (int i=0;i<nbSeg;i++)
-		{
-			std::set<Surface_mesh::Vertex>::iterator vit, vend = segVertices[i].end();
-			int j = 0;
-			for (vit=segVertices[i].begin(); vit!=vend; vit++, j++)
+			for (fit = mesh.faces_begin(); fit!=fend; ++fit)
 			{
-				segment[i]->add_vertex(mesh.getVertexPos(*vit));
+				Surface_mesh::Face f = fit;
+				int sid = faceSeg[f.idx()];
 
-				segVerMap[i].insert(std::make_pair(*vit, mesh.getVertex(j)));  // Create a new index for each vertex
+				fvit = mesh.vertices(fit);	
+				segVertices[sid].insert(fvit);
+				segVertices[sid].insert(++fvit);
+				segVertices[sid].insert(++fvit);
 			}
+
+			// Add Vertices to each segment	
+			std::vector< std::map <Surface_mesh::Vertex, Surface_mesh::Vertex> > segVerMap(nbSeg);
+			Surface_mesh::Vertex_property<Point>  points   = mesh.vertex_property<Point>("v:point");
+
+			for (int i=0;i<nbSeg;i++)
+			{
+				std::set<Surface_mesh::Vertex>::iterator vit, vend = segVertices[i].end();
+				int j = 0;
+				for (vit=segVertices[i].begin(); vit!=vend; vit++, j++)
+				{
+					segment[i]->add_vertex(mesh.getVertexPos(*vit));
+
+					segVerMap[i].insert(std::make_pair(*vit, mesh.getVertex(j)));  // Create a new index for each vertex
+				}
+			}
+
+			// Add Faces to each segment
+			std::vector<Surface_mesh::Vertex>  vertices(3);
+			for (fit = mesh.faces_begin(); fit!=fend; ++fit)
+			{
+				Surface_mesh::Face f = fit;
+				int sid = faceSeg[f.idx()];
+
+				fvit = mesh.vertices(fit);
+				vertices[0] = segVerMap[sid][fvit];
+				vertices[1] = segVerMap[sid][++fvit];
+				vertices[2] = segVerMap[sid][++fvit];
+
+				segment[sid]->add_face(vertices);
+			}
+
 		}
-
-		// Add Faces to each segment
-		std::vector<Surface_mesh::Vertex>  vertices(3);
-		for (fit = mesh.faces_begin(); fit!=fend; ++fit)
-		{
-			Surface_mesh::Face f = fit;
-			int sid = faceSeg[f.idx()];
-
-			fvit = mesh.vertices(fit);
-			vertices[0] = segVerMap[sid][fvit];
-			vertices[1] = segVerMap[sid][++fvit];
-			vertices[2] = segVerMap[sid][++fvit];
-
-			segment[sid]->add_face(vertices);
-		}
-
 	}
 
-	// Clear the empty segment
+	// Clear any empty segments
 	for (std::vector<QSurfaceMesh*>::iterator itr=segment.begin(); itr!=segment.end(); )
 	{
 		if (!(*itr)->n_vertices())
-		{
 			itr = segment.erase(itr);
-		}
 		else
 			itr++;
 	}
