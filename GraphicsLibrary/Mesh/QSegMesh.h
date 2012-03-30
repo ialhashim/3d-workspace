@@ -6,8 +6,6 @@
 #include "QSurfaceMesh.h"
 #include <vector>
 
-class Controller;
-
 class QSegMesh : public QObject
 {
 	Q_OBJECT
@@ -73,18 +71,9 @@ public:
 	void setObjectName(const QString &name);
 	QVector<QString> segmentName;
 
-	// Controller
-	Controller* controller;
-
-	// Stackability
-	Scalar O_max;
-	Scalar stackability;
-	Scalar theta, phi;
-	Vec3d translation;
-
 	// Other auxiliary data
-	QMap<QString, std::vector<double> > data1D, data1D_b, data1D_c;
-	QMap<QString, std::vector< std::vector<double> > > data2D, data2D_b, data2D_c;
+        QMap<QString, std::vector<double> > data1D;
+        QMap<QString, std::vector< std::vector<double> > > data2D;
 
 private:
 	std::vector<QSurfaceMesh*> segment;

@@ -10,9 +10,8 @@ public:
 
 	// POINTS
 	static void IdentifyPoint(const Vec3d& p, float r = 1.0, float g = 0.2f, float b = 0.2f, float pointSize = 10.0);
-	static void IdentifyPoint2(Vec3d p);
-	static void IdentifyPoints(StdVector<Vec3d> & points, float r = 1.0, float g = 0.2f, float b = 0.2f, float pointSize = 10.0);
-	static void IdentifyPoints( StdVector<Vec3d > & points, Vec4d c = Vec4d(1,0,0,1), float pointSize = 10.0 );
+        static void IdentifyPoint2(Vec3d p);
+        static void IdentifyPoints(const StdVector<Vec3d > & points, Vec4d c = Vec4d(1,0,0,1), float pointSize = 10.0 );
 	static void IdentifyConnectedPoints(StdVector<Vec3d> & points, float r = 0.4f, float g = 1.0, float b = 0.2f);
 	static void IdentifyConnectedPoints2(StdVector<Vec3d> & points, float r = 0.4f, float g = 1.0, float b = 0.2f );
 

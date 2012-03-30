@@ -14,7 +14,6 @@ QSegMesh::QSegMesh()
 {
 	isReady = false;
 	isDrawAABB = false;
-	controller = NULL;
 	upVec = Vec3d(0,0,1);
 	radius = 1.0;
 }

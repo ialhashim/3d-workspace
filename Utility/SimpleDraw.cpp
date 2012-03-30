@@ -1,6 +1,6 @@
 #include "SimpleDraw.h"
 #include "Macros.h"
-#include "GL/GLU.h"
+#include <GL/glu.h>
 
 // Bad includes.. needed for rotations for now
 #include "GUI/Viewer/libQGLViewer/QGLViewer/qglviewer.h"
@@ -714,7 +714,7 @@ void SimpleDraw::IdentifyPoint2( Vec3d  p )
 	IdentifyPoint(p, 0.2f, 1.0f, 0.2f, 12.0f);
 }
 
-void SimpleDraw::IdentifyPoints( StdVector<Vec3d > & points, Vec4d c, float pointSize)
+void SimpleDraw::IdentifyPoints(const StdVector<Vec3d > & points, Vec4d c, float pointSize)
 {
 	glDisable(GL_LIGHTING);
 
