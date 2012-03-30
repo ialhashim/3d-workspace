@@ -29,6 +29,14 @@
 
 //=============================================================================
 
+// For Windows warnings..
+#ifdef WIN32
+    inline FILE* myfopen(const char * name, const char * mode)
+    {FILE *f; fopen_s(&f, name, mode); return f;}
+    #define fopen(x,y) myfopen(x,y)
+    #define sscanf sscanf_s
+    #define fscanf fscanf_s
+#endif
 
 bool read_mesh(Surface_mesh& mesh, const std::string& filename);
 bool read_off(Surface_mesh& mesh, const std::string& filename);

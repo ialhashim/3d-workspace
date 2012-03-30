@@ -184,7 +184,7 @@ StdVector<SamplePoint> Sampler::getSamplesFromQSegMesh( QSegMesh* srcMesh, int n
 
 	std::vector< Sampler > sampler;
 	std::vector< double > area;
-	for (int i = 0; i < srcMesh->nbSegments(); i++)
+	for (int i = 0; i < (int) srcMesh->nbSegments(); i++)
 	{
 		Sampler s( srcMesh->getSegment(i) );
 		sampler.push_back( s );
@@ -192,7 +192,7 @@ StdVector<SamplePoint> Sampler::getSamplesFromQSegMesh( QSegMesh* srcMesh, int n
 	}
 
 	double totalArea = Sum(area);
-	for (int i = 0; i < srcMesh->nbSegments(); i++)
+	for (int i = 0; i < (int) srcMesh->nbSegments(); i++)
 	{
 		int n = (area[i] / totalArea) * numberSamples;
 		std::vector< SamplePoint > samps = sampler[i].getSamples(n);

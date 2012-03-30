@@ -248,7 +248,8 @@ void QSegMesh::read( QString fileName )
 
 void QSegMesh::saveObj( QString fileName )
 {
-	FILE * outF = fopen (qPrintable(fileName) , "w");
+    FILE * outF;
+    fopen_s (&outF, qPrintable(fileName) , "w");
 
 	uint faceOffset = 1;
 

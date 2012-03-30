@@ -69,7 +69,7 @@ void Octree::initBuild( StdList<BaseTriangle*>& tris, int triPerNode )
 	{
 		Octree * curr = childStack.top(); childStack.pop();
 
-		for(int i = 0; i < curr->children.size(); i++)
+		for(int i = 0; i < (int) curr->children.size(); i++)
 		{
 			curr->children[i].parent = curr;
 

@@ -7,32 +7,34 @@ CONFIG += debug console
 DEFINES += QT_XML_LIB QT_OPENGL_LIB qh_QHpointer QT_DLL
 
 INCLUDEPATH += ./GeneratedFiles \
-    ./GeneratedFiles/Debug \
-    ./GraphicsLibrary/Mesh/SurfaceMesh \
-    ./Utility \
-
+./GeneratedFiles/Debug \
+./GraphicsLibrary/Mesh/SurfaceMesh \
+./Utility
 
 win32{
-	LIBS += -L$$PWD"/GUI/Viewer/libQGLViewer/QGLViewer/lib" \
-	    -lopengl32 \
-	    -lglu32 \
-	    -lQGLViewerd2
+        LIBS += -L$$PWD"/GUI/Viewer/libQGLViewer/QGLViewer/lib" \
+        -lopengl32 \
+        -lglu32
+
+        CONFIG(debug, debug|release){
+                LIBS += -lQGLViewerd2
+        }else{
+                LIBS += -lQGLViewer2
+        }
 }
 
 unix {
-	CONFIG(debug, debug|release){
-	    QMAKE_CXXFLAGS+= -ggdb -g3 -O0 -fopenmp
-	    QMAKE_LFLAGS *= -fopenmp
-	    LIBS += -lGLEW -lGLU -lGL -lQGLViewer
-	}
+        CONFIG(debug, debug|release){
+                QMAKE_CXXFLAGS+= -ggdb -g3 -O0 -fopenmp
+                QMAKE_LFLAGS *= -fopenmp
+                LIBS += -lGLEW -lGLU -lGL -lQGLViewer
+        }
 }
 
-
-INCLUDEPATH += ./GeneratedFiles \
-    ./GeneratedFiles/Debug \
-    . \
-    ./GraphicsLibrary/Mesh/SurfaceMesh \
-    ./Utility
+INCLUDEPATH += . \
+./GeneratedFiles \
+./GeneratedFiles/Debug \
+./GraphicsLibrary/Mesh/SurfaceMesh \
 
 DEPENDPATH += .
 MOC_DIR += ./GeneratedFiles/debug

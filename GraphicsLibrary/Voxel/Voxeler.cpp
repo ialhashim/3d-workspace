@@ -359,7 +359,7 @@ std::vector<Voxel> Voxeler::Intersects(Voxeler * other)
 		maxVoxeler = this;
 	}
 
-	for(int i = 0; i < minVoxeler->voxels.size(); i++)
+	for(int i = 0; i < (int) minVoxeler->voxels.size(); i++)
 	{
 		Voxel v = minVoxeler->voxels[i];
 
@@ -466,7 +466,7 @@ int Voxeler::getEnclosingVoxel( Vec3d point )
 
 int Voxeler::getVoxelIndex( Voxel v )
 {
-	for(int i = 0; i < voxels.size(); i++)
+	for(int i = 0; i < (int) voxels.size(); i++)
 	{
 		Voxel w = voxels[i];
 
@@ -481,7 +481,7 @@ std::vector< Point > Voxeler::getVoxelCenters()
 {
 	std::vector< Point > pnts;
 
-	for(int i = 0; i < voxels.size(); i++){
+	for(int i = 0; i < (int) voxels.size(); i++){
 		Voxel w = voxels[i];
 		pnts.push_back(Point(w.x * voxelSize, w.y* voxelSize, w.z* voxelSize) );
 	}
