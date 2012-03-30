@@ -16,7 +16,7 @@ QSegMesh::QSegMesh()
 	isDrawAABB = false;
 	upVec = Vec3d(0,0,1);
 	radius = 1.0;
-}3
+}
 
 QSegMesh::QSegMesh( const QSegMesh& from )
 {
