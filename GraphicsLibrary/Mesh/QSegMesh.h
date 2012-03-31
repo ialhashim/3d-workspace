@@ -72,8 +72,9 @@ public:
 	QVector<QString> segmentName;
 
 	// Other auxiliary data
-        QMap<QString, std::vector<double> > data1D;
-        QMap<QString, std::vector< std::vector<double> > > data2D;
+	QMap<QString, std::vector<double> > data1D;
+	QMap<QString, std::vector< std::vector<double> > > data2D;
+	QMap<QString, void*> ptr;
 
 private:
 	std::vector<QSurfaceMesh*> segment;
