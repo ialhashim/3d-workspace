@@ -1,5 +1,5 @@
 ﻿#include "GUI/global.h"
-#include "QSegMesh.h"
+#include "GraphicsLibrary/Mesh/QSegMesh.h"
 #include <fstream>
 #include <set>
 #include <map>
@@ -248,8 +248,7 @@ void QSegMesh::read( QString fileName )
 
 void QSegMesh::saveObj( QString fileName )
 {
-    FILE * outF;
-    fopen_s (&outF, qPrintable(fileName) , "w");
+    FILE * outF = fopen (qPrintable(fileName) , "w");
 
 	uint faceOffset = 1;
 

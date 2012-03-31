@@ -75,6 +75,7 @@ public:
 	QMap<QString, std::vector<double> > data1D;
 	QMap<QString, std::vector< std::vector<double> > > data2D;
 	QMap<QString, void*> ptr;
+	QMap<QString, double> val;
 
 private:
 	std::vector<QSurfaceMesh*> segment;
