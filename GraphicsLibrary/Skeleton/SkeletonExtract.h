@@ -1,7 +1,7 @@
 // Based on the paper "Skeleton Extraction by Mesh Contraction" [Au:2008]
 #pragma once
 
-#include "QSurfaceMesh.h"
+#include "GraphicsLibrary/Mesh/QSurfaceMesh.h"
 
 // For simplification step
 #include "VertexRecord.h"

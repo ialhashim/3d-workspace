@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ui_DeformerWidget.h"
-#include "Scene.h"
+#include "GUI/Scene.h"
 #include "QFFD.h"
 
 class DeformerPanel : public QWidget

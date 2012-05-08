@@ -1454,7 +1454,7 @@ public: //------------------------------------------ geometry-related functions
 
 
 
-private: //---------------------------------------------- allocate new elements
+public: //---------------------------------------------- allocate new elements
 
     /// allocate a new vertex, resize vertex properties accordingly.
     Vertex new_vertex()
@@ -1491,7 +1491,7 @@ private: //---------------------------------------------- allocate new elements
 
 
 
-private: //--------------------------------------------------- helper functions
+public: //--------------------------------------------------- helper functions
 
     /// find the halfedge from start to end
     Halfedge find_halfedge(Vertex start, Vertex end) const;

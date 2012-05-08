@@ -94,7 +94,7 @@ Vec3d Line::midPoint()
 
 Vec3d Line::project( const Vec3d& point )
 {
-	return pointAt(dot((point - a) , direction()));
+	return pointAt(dot((point - a), direction()));
 }
 
 Vec3d Line::pointAt( double time ) const
@@ -105,7 +105,7 @@ Vec3d Line::pointAt( double time ) const
 
 double Line::timeAt( const Vec3d& point )
 {
-	return (point - a).norm() / length;
+	return dot((point - a), direction().normalized()) / length;
 }
 
 Pairdouble Line::lengthsAt( const Vec3d& point )

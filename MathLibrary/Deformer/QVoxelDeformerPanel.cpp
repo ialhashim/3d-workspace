@@ -1,5 +1,8 @@
 #include "QVoxelDeformerPanel.h"
 
+#include "Stacker/Primitive.h"
+#include "Stacker/Controller.h"
+
 QVoxelDeformerPanel::QVoxelDeformerPanel()
 {
 	activeDeformer = NULL;
@@ -26,7 +29,8 @@ void QVoxelDeformerPanel::onBuildButtonClicked()
 	if(!activeScene || !activeScene->activeObject())
 		return;
 
-	Primitive * prim = activeScene->activeObject()->controller->getSelectedPrimitive();
+	Controller * ctrl = (Controller *)activeScene->activeObject()->ptr["controller"];
+	Primitive * prim = ctrl->getSelectedPrimitive();
 
 	if(!prim) return;
 

@@ -28,6 +28,7 @@ public:
 	QSurfaceMesh* operator [] (uint i);
 	QSurfaceMesh* getSegment(uint i);
 	QSurfaceMesh* getSegment( QString sid );
+	void setSegment(uint i, QSurfaceMesh * newSegment);
 	std::vector<QSurfaceMesh*> getSegments();
 	uint nbSegments();
 	uint segmentIdOfVertex( uint vid );
@@ -65,7 +66,10 @@ public:
 	bool isDrawAABB;
 	Point bbmin, bbmax, center;
 	Scalar radius;
+
+	// Record of Normalization
 	Scalar scaleFactor;
+	Vec3d translation;
 
 	// Set global unique name for this and all its segments
 	void setObjectName(const QString &name);

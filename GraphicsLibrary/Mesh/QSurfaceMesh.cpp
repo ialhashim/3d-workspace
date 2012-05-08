@@ -1,4 +1,4 @@
-#include "QSurfaceMesh.h"
+#include "GraphicsLibrary/Mesh/QSurfaceMesh.h"
 #include "IO_.h"
 
 #include "GraphicsLibrary/SpacePartition/Intersection.h"
@@ -15,46 +15,55 @@ QSurfaceMesh::QSurfaceMesh() : Surface_mesh()
 
 	// Render options
 	isDrawBB = false;
-	isVisible = true;
 
 	upVec = Vec3d(0,0,1);
 
-	averageEdgeLength = -1;
+	averageEdgeLength = 0.1;
 	radius = 1.0;
+	scalingFactor = 1.0;
 }
 
 QSurfaceMesh::QSurfaceMesh( const QSurfaceMesh& from ) : Surface_mesh(from)
 {
-	averageEdgeLength = from.averageEdgeLength;
+	this->averageEdgeLength = from.averageEdgeLength;
 
 	this->bbmin = from.bbmin;
 	this->bbmax = from.bbmax;
 	this->radius = from.radius;
+	this->scalingFactor = from.scalingFactor;
+
 	this->triangles = from.triangles;
 	this->edges = from.edges;
+
 	this->isReady = from.isReady;
 	this->isDirty = from.isDirty;
 	this->isDrawBB = from.isDrawBB;
+
 	this->upVec = from.upVec;
 
 	this->assignFaceArray();
 	this->assignVertexArray();
 }
 
-QSurfaceMesh& QSurfaceMesh::operator=( const QSurfaceMesh& rhs )
+QSurfaceMesh& QSurfaceMesh::operator=( const QSurfaceMesh& from )
 {
-	Surface_mesh::operator=(rhs);
+	Surface_mesh::operator=(from);
 
-	this->isReady = rhs.isReady;
-	this->bbmin = rhs.bbmin;
-	this->bbmax = rhs.bbmax;
-	this->radius = rhs.radius;
-	this->triangles = rhs.triangles;
-	this->edges = rhs.edges;
-	this->isReady = rhs.isReady;
-	this->isDirty = rhs.isDirty;
-	this->isDrawBB = rhs.isDrawBB;
-	this->upVec = rhs.upVec;
+	this->averageEdgeLength = from.averageEdgeLength;
+
+	this->bbmin = from.bbmin;
+	this->bbmax = from.bbmax;
+	this->radius = from.radius;
+	this->scalingFactor = from.scalingFactor;
+
+	this->triangles = from.triangles;
+	this->edges = from.edges;
+
+	this->isReady = from.isReady;
+	this->isDirty = from.isDirty;
+	this->isDrawBB = from.isDrawBB;
+
+	this->upVec = from.upVec;
 
 	this->assignFaceArray();
 	this->assignVertexArray();
@@ -131,9 +140,9 @@ void QSurfaceMesh::drawDebug()
 	}
 
 	// Debug points
-	foreach(Point p, debug_points)	SimpleDraw::IdentifyPoint(p, 1,0,0);
-	foreach(Point p, debug_points2)	SimpleDraw::IdentifyPoint(p, 0,1,0);
-	foreach(Point p, debug_points3)	SimpleDraw::IdentifyPoint(p, 0,0,1);
+	SimpleDraw::IdentifyPoints(debug_points, Vec4d(1,0,0,1));
+	SimpleDraw::IdentifyPoints(debug_points2, Vec4d(0,1,0,1));
+	SimpleDraw::IdentifyPoints(debug_points3, Vec4d(0,0,1,1));
 
 	// Debug lines
 	foreach(std::vector<Point> line, debug_lines) SimpleDraw::IdentifyConnectedPoints(line, 1.0,0,0);
@@ -287,20 +296,6 @@ std::vector<unsigned int> QSurfaceMesh::cloneTriangleIndices()
 	return triangles;
 }
 
-std::vector<uint> QSurfaceMesh::vertexIndicesAroundFace( uint f_id )
-{
-	std::vector<uint> vindices;
-
-	Vertex_around_face_circulator fvit, fvend;
-	fvit = fvend = vertices(Face(f_id));
-
-	do{
-		vindices.push_back( ((Vertex)fvit).idx() );
-	} while (++fvit != fvend);
-
-	return vindices;
-}
-
 Point QSurfaceMesh::getVertexPos( uint v_id )
 {
 	return getVertexPos(Vertex(v_id));
@@ -339,10 +334,10 @@ void QSurfaceMesh::setVertexColor( uint v_id, const Color& newColor )
 double QSurfaceMesh::getAverageEdgeLength()
 {
 	// Efficiency
-	if(averageEdgeLength >= 0)
-		return averageEdgeLength;
+	//if(averageEdgeLength >= 0)
+	//	return averageEdgeLength;
 
-	Vertex_property<Point>  points  = vertex_property<Point>("v:point");
+	Vertex_property<Point>  points = vertex_property<Point>("v:point");
 
 	Edge_iterator eit, eend = edges_end();
 
@@ -543,6 +538,7 @@ void QSurfaceMesh::buildUp()
 	setColorVertices();
 	update_face_normals();
 	update_vertex_normals();
+	fillTrianglesList();
 }
 
 void QSurfaceMesh::assignVertexArray()
@@ -646,7 +642,7 @@ std::set<uint> QSurfaceMesh::vertexIndicesAroundVertex( const Vertex& v )
 
 	Vertex_around_vertex_circulator vit, vend;
 	vit = vend = vertices(v);
-        do{ result.insert(Vertex((uint)vit).idx()); ++vit;} while(vit != vend);
+	do{ result.insert(Vertex(vit).idx()); ++vit;} while(vit != vend);
 
 	return result;
 }
@@ -657,9 +653,21 @@ std::set<uint> QSurfaceMesh::faceIndicesAroundVertex( const Vertex& v )
 
 	Face_around_vertex_circulator fit, fend;
 	fit = fend = faces(v);
-        do{ result.insert(Face((uint)fit).idx()); ++fit; } while(fit != fend);
+	do{ result.insert(Face(fit).idx()); ++fit; } while(fit != fend);
 
 	return result;
+}
+
+std::vector<uint> QSurfaceMesh::vertexIndicesAroundFace( uint f_id )
+{
+	std::vector<uint> vindices;
+
+	Vertex_around_face_circulator fvit, fvend;
+	fvit = fvend = vertices(Face(f_id));
+
+	do{ vindices.push_back( ((Vertex)fvit).idx() ); } while (++fvit != fvend);
+
+	return vindices;
 }
 
 std::vector< std::pair<Point, Point> > QSurfaceMesh::cloneEdges()
@@ -832,4 +840,37 @@ Point QSurfaceMesh::closestPointFace( Face f, const Point & p )
 	std::vector<Point> pnts = facePoints(f);
 
 	return ClosestPtPointTriangle(p, pnts[0], pnts[1], pnts[2]);
+}
+
+void QSurfaceMesh::scale( double s )
+{
+	Vertex_property<Point>  points  = vertex_property<Point>("v:point");
+	Vertex_iterator vit, vend = vertices_end();
+	for(vit = vertices_begin(); vit != vend; ++vit)
+		points[vit] *= s;
+}
+
+void QSurfaceMesh::setFromOther( QSurfaceMesh * other )
+{
+	Point oldCenter = this->center;
+
+	// Remove vertices, faces, edges
+	this->clear();
+
+	// Add other vertices
+	Vertex_property<Point>  other_points  = other->vertex_property<Point>("v:point");
+	Vertex_iterator vit, vend = other->vertices_end();
+	for(vit = other->vertices_begin(); vit != vend; ++vit)
+		this->add_vertex((other_points[vit] - other->center) + oldCenter);
+
+	// Add other faces
+	Face_iterator fit, fend = other->faces_end();
+	for(fit = other->faces_begin(); fit != fend; ++fit){
+		std::vector<Vertex> verts;
+
+		Vertex_around_face_circulator fvit = other->vertices(fit), fvend = other->vertices(fit);
+		do{ verts.push_back(fvit); } while (++fvit != fvend);
+
+		this->add_face(verts);
+	}
 }

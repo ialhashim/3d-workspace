@@ -1,35 +1,39 @@
 #ifndef CIRCLE_H
 #define CIRCLE_H
 
-#include "Point.h"
-#include "Color4.h"
+#include "Line.h"
+
+#define V2V(v) (Vec3d(v.x,v.y,v.z))
+#define Vec3d2V(v) (Vec(v.x(),v.y(),v.z()))
 
 class Circle
 {
 private:
-	float radius;
+	double radius;
 
 	int numSides;
 
-	Vec normal;
-	Vec center;
+	Vec3d normal;
+	Vec3d center;
 
-	Vector<Vec3d> point;
+	StdVector<Vec3d> point;
 
 public:
 	Circle();
 
-	Circle(float from_radius, int number_of_sides, const Vec& circle_normal = Vec(0,0,1), const Vec& circle_center = Vec(0,0,0));
+	Circle(const Vec3d& circle_center = Vec3d(0,0,0), const Vec3d& circle_normal = Vec3d(0,0,1), 
+		double from_radius = 1.0, int number_of_sides = 40);
 	Circle& operator= (const Circle& from);
 
-	Vec & getNormal();
-	Vec & getCenter();
+	Vec3d & getNormal();
+	Vec3d & getCenter();
 
-	Vector<Vec3d> getPoints();
+	StdVector<Vec3d> getPoints();
 
-	void translate(const Vec & to);
+	void translate(const Vec3d & to);
 
-	void draw(double lineWidth, const Color4 & color);
+	void draw(double lineWidth = 1.0, const Vec4d & color = Vec4d(1,1,1,1));
+	void drawFilled(const Vec4d & fillColor = Vec4d(1,0,0,1), double lineWidth = 2, const Vec4d & borderColor = Vec4d(1,1,1,1));
 };
 
 #endif // CIRCLE_H

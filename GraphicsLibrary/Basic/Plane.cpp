@@ -1,4 +1,4 @@
-#include "Plane.h"
+#include "GraphicsLibrary/Basic/Plane.h"
 #include "Utility/SimpleDraw.h"
 
 Vec3d Plane::projectionOf(const Vec3d &point)

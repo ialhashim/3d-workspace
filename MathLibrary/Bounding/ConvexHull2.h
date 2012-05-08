@@ -1,6 +1,6 @@
 // Geometric Tools, LLC
 
-#include "SurfaceMesh/Vector.h"
+#include "GraphicsLibrary/Mesh/SurfaceMesh/Vector.h"
 #include <vector>
 
 

@@ -251,6 +251,29 @@ void VBO::render_as_points( bool dynamic /*= false*/ )
 	glPointSize(pointSize);
 }
 
+void VBO::render_depth( bool dynamic /*= false*/ )
+{
+	if(dynamic || isDirty)
+		update();
+
+	glEnable(GL_LIGHTING);
+	glPushClientAttrib(GL_CLIENT_VERTEX_ARRAY_BIT);
+
+	// Bind vertex positions
+	glBindBufferARB(GL_ARRAY_BUFFER_ARB, vertex_vbo_id);
+	glVertexPointer(3, GL_DOUBLE, 0, NULL);
+	glEnableClientState(GL_VERTEX_ARRAY);
+	
+	// Bind faces
+	glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, faces_id);
+
+	// Draw all faces
+	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, NULL);
+
+	glPopClientAttrib();
+	glBindBuffer(GL_ARRAY_BUFFER_ARB, 0);
+}
+
 void VBO::render( bool dynamic )
 {
 	if(!isVBOEnabled)

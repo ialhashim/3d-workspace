@@ -1,7 +1,7 @@
 #pragma once
 
-#include "QSurfaceMesh.h"
-#include "libQGLViewer/QGLViewer/manipulatedFrame.h"
+#include "GraphicsLibrary/Mesh/QSurfaceMesh.h"
+#include "GUI/Viewer/libQGLViewer/QGLViewer/manipulatedFrame.h"
 
 // Movable control points
 class QControlPoint : public qglviewer::ManipulatedFrame

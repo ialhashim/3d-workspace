@@ -23,9 +23,9 @@ SkeletonExtract::SkeletonExtract( QSurfaceMesh * fromMesh )
 	volumneRatioThreashold = 0.00001;
 	isApplyJointMergingStep = false; // usefulness?
 
-	// Save a copy of the mesh
-	this->mesh = *fromMesh;
+	// Use a copy of the mesh
 	this->src_mesh = fromMesh;
+	this->mesh = *fromMesh;
 
 	// Normalize
 	this->scaleFactor = this->mesh.normalize();
@@ -590,9 +590,9 @@ void SkeletonExtract::EmbeddingImproving()
 
 void SkeletonExtract::MergeJoint()
 {
-	Surface_mesh::Vertex_property< std::vector<uint> > adjVV = mesh.vertex_property< std::vector<uint> >("v:adjVV");
-	Surface_mesh::Vertex_property< std::vector<uint> > adjVF = mesh.vertex_property< std::vector<uint> >("v:adjVF");
-	
+	Surface_mesh::Vertex_property< std::set<uint> > adjVV = mesh.vertex_property< std::set<uint> >("v:adjVV");
+	Surface_mesh::Vertex_property< std::set<uint> > adjVF = mesh.vertex_property< std::set<uint> >("v:adjVF");
+
 	std::vector<uint> segmentIndex (n);
 
 	// init segment index

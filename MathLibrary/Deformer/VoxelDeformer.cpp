@@ -1,6 +1,6 @@
 #include "VoxelDeformer.h"
-#include "SimpleDraw.h"
-#include "ColorMap.h"
+#include "Utility/SimpleDraw.h"
+#include "Utility/ColorMap.h"
 
 VoxelDeformer::VoxelDeformer( QSurfaceMesh * fromMesh, double voxel_size )
 {

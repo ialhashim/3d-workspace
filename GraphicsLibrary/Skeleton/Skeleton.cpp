@@ -1,8 +1,8 @@
 #include "Skeleton.h"
 
-#include "SimpleDraw.h"
+#include "Utility/SimpleDraw.h"
+#include "Utility/Macros.h"
 #include <QtOpenGL>
-#include "Macros.h"
 
 Skeleton::Skeleton()
 {

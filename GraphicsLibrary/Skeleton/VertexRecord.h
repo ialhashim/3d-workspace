@@ -1,7 +1,7 @@
 #pragma once
 
 #include <float.h>
-#include "QSurfaceMesh.h"
+#include "GraphicsLibrary/Mesh/QSurfaceMesh.h"
 
 // data structures
 #include <queue>
@@ -24,8 +24,8 @@ public:
 
 	std::map<uint, double> boundaryLength;
 
-	uint vIndex;
-	uint minIndex;
+	int vIndex;
+	int minIndex;
 	double minError;
 	bool center;
 	double err;

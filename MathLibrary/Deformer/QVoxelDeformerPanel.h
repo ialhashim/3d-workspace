@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ui_QVoxelDeformerWidget.h"
-#include "Scene.h"
+#include "GUI/Scene.h"
 #include "VoxelDeformer.h"
 
 class QVoxelDeformerPanel : public QWidget

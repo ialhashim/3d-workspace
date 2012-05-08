@@ -65,4 +65,22 @@ public:
 	Triangle shiftY(float offsetY);
 
 	void intersectionTest(const Ray & ray, HitResult & res, bool allowBack = false) const;
+
+	Vec3d getBarycentric( double U, double V )
+	{
+		if(U == 1.0) return p[1];
+		if(V == 1.0) return p[2];
+
+		double b1 = U;
+		double b2 = V;
+		double b3 = 1.0 - (U + V);
+
+		Vec3d result, V1 = p[1], V2 = p[2], V3 = p[0];
+
+		result.x() = (b1 * V1.x()) + (b2 * V2.x()) + (b3 * V3.x());
+		result.y() = (b1 * V1.y()) + (b2 * V2.y()) + (b3 * V3.y());
+		result.z() = (b1 * V1.z()) + (b2 * V2.z()) + (b3 * V3.z());
+
+		return result;
+	}
 };

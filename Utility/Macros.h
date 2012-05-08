@@ -16,8 +16,8 @@
 #ifdef _WIN32
 	#include <GL/GLee.h>
 #else
-        #include <GL/glew.h>
-        #define GLEE_ARB_vertex_buffer_object GLEW_ARB_vertex_buffer_object
+    #include <GL/glew.h>
+    #define GLEE_ARB_vertex_buffer_object GLEW_ARB_vertex_buffer_object
 #endif
 
 // Constants
@@ -153,6 +153,9 @@ void inline RotateFromTo(VECTYPE from, VECTYPE to, VECTYPE & point, VECTYPE pivo
 	point = ROTATE_VEC(point, theta, axis);
 	point += pivot;
 }
+
+#define V2E(vec) (Eigen::Vector3d(vec[0], vec[1], vec[2]))
+#define E2V(vec) (Vec3d(vec[0], vec[1], vec[2]))
 
 // Array operations
 #include <algorithm>

@@ -335,7 +335,7 @@ public:
 
 		EdgesSet result;
 
-		for(std::vector<Edge>::iterator it = allEdges.begin(); it != allEdges.end(); it++)
+        for(typename std::vector<Edge>::iterator it = allEdges.begin(); it != allEdges.end(); it++)
 			result.insert(*it);
 
 		return result;
@@ -472,11 +472,11 @@ public:
 
 	void subGraph(Graph & g, const std::set<vertex_t> & explored)
 	{
-		for(std::set<vertex_t>::const_iterator vi = explored.begin(); vi != explored.end(); vi++)
+        for(typename std::set<vertex_t>::const_iterator vi = explored.begin(); vi != explored.end(); vi++)
 		{
 			std::list<Edge> adj = g.adjacency_map[*vi];
 
-			for(std::list<Edge>::iterator e = adj.begin(); e != adj.end(); e++)
+            for(typename std::list<Edge>::iterator e = adj.begin(); e != adj.end(); e++)
 				this->AddEdge(*vi, e->target, e->weight);
 		}
 	}
@@ -487,10 +487,10 @@ public:
 
 		// Make a 'bitmap' of visited nodes
 		std::map<vertex_t, bool> isVisited;
-		for(std::set<vertex_t>::iterator it = vertices.begin(); it != vertices.end(); it++)
+        for(typename std::set<vertex_t>::iterator it = vertices.begin(); it != vertices.end(); it++)
 			isVisited[*it] = false;
 		
-		for(std::map<vertex_t,bool>::iterator i = isVisited.begin(); i != isVisited.end(); i++)
+        for(typename std::map<vertex_t,bool>::iterator i = isVisited.begin(); i != isVisited.end(); i++)
 		{
 			// Check if visited
 			if(i->second)
@@ -506,7 +506,7 @@ public:
 			result.back().subGraph(*this, explored);
 
 			// mark as visited the explored
-			for(std::set<vertex_t>::iterator vi = explored.begin(); vi != explored.end(); vi++)
+            for(typename std::set<vertex_t>::iterator vi = explored.begin(); vi != explored.end(); vi++)
 				isVisited[*vi] = true;
 		}
 	
@@ -529,7 +529,7 @@ public:
 
 		DijkstraComputePaths(seed);
 
-		for(std::set<vertex_t>::iterator it = seedSet.begin(); it != seedSet.end(); it++)
+        for(typename std::set<vertex_t>::iterator it = seedSet.begin(); it != seedSet.end(); it++)
 		{
 			std::list<vertex_t> curPath = DijkstraGetShortestPathTo(*it);
 
@@ -544,7 +544,7 @@ public:
 	{
 		if(v1 == v2) return true;
 
-		for(std::list<Edge>::iterator e = adjacency_map[v1].begin(); e != adjacency_map[v1].end(); e++)
+        for(typename std::list<Edge>::iterator e = adjacency_map[v1].begin(); e != adjacency_map[v1].end(); e++)
 			if(e->target == v2) return true;
 
 		return false;

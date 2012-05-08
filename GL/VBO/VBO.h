@@ -44,6 +44,7 @@ public:
 	void render_wireframe(bool dynamic = false);
 	void render_vertices(bool dynamic = false);
 	void render_as_points(bool dynamic = false);
+	void render_depth(bool dynamic = false);
 	void render(bool dynamic = false);
 
 	// State of VBO

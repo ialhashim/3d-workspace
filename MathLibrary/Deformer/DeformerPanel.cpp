@@ -1,7 +1,11 @@
 #include "DeformerPanel.h"
+#include "Stacker/Primitive.h"
+#include "Stacker/Controller.h"
 
 DeformerPanel::DeformerPanel()
 {
+	activeScene = NULL;
+
 	dw.setupUi(this);
 
 	// Connections
@@ -11,7 +15,6 @@ DeformerPanel::DeformerPanel()
 void DeformerPanel::setActiveScene( Scene * newScene)
 {
 	activeScene = newScene;
-
 }
 
 void DeformerPanel::onCreateBoundingClicked()
@@ -19,7 +22,8 @@ void DeformerPanel::onCreateBoundingClicked()
 	if(!activeScene || !activeScene->activeObject())
 		return;
 
-	Primitive * prim = activeScene->activeObject()->controller->getSelectedPrimitive();
+	Controller * ctrl = (Controller *)activeScene->activeObject()->ptr["controller"];
+	Primitive * prim = ctrl->getSelectedPrimitive();
 
 	if(!prim) return;
 

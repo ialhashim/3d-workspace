@@ -1,6 +1,6 @@
 #include "Vector.h"
-#include "Graph.h"
-#include "kdtree.h"
+#include "Utility/Graph.h"
+#include "GraphicsLibrary/SpacePartition/kdtree.h"
 typedef unsigned int uint;
 
 class ClosedPolygon{

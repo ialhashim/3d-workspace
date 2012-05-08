@@ -1,11 +1,11 @@
 // From Geometric Tools, LLC
 #pragma once
 
-//Visulization
+// Visualization
 #include "Surface_mesh.h"
-#include "SimpleDraw.h"
+#include "Utility/SimpleDraw.h"
 
-#include "SurfaceMesh/Vector.h"
+#include "GraphicsLibrary/Mesh/SurfaceMesh/Vector.h"
 #include <vector>
 #include <set>
 #include <map>
@@ -14,13 +14,13 @@
 typedef double								Real;
 typedef Vector<Real, 3>						Vector3;
 
-extern int CH_PRECISION;
 
 class  ConvexHull3
 {
 public:
 	ConvexHull3(Surface_mesh * mesh);
 	ConvexHull3( std::vector<Vector3> pnts );
+	void computeCH( std::vector<Vector3> &pnts );
 	bool computeCH();
 	void draw();
 
@@ -71,5 +71,6 @@ private:
 	// Positive side: \d > epsilon
 	// On the plane:  ||\d|| <= epsilon
 	// Negtive side: \d < -epsilon
+	int precision;
 	Real epsilon; 
 };

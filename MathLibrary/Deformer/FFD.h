@@ -1,6 +1,6 @@
 #pragma once
 
-#include "QSurfaceMesh.h"
+#include "GraphicsLibrary/Mesh/QSurfaceMesh.h"
 #include "QControlPoint.h"
 
 enum FFD_FitType {BoundingBoxFFD, VolumeFFD};

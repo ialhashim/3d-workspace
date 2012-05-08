@@ -20,7 +20,6 @@ public:
 	void assignVertexArray();
 	void assignFaceArray();
 
-	std::vector<uint> vertexIndicesAroundFace( uint f_id );	
 	Point getVertexPos( uint v_id );
 	Point getVertexPos( const Vertex v );
 	void setVertexPos( const Vertex v, Point newPos);
@@ -29,10 +28,12 @@ public:
 
 	std::set<uint> faceIndicesAroundVertex(const Vertex& v);
 	std::set<uint> vertexIndicesAroundVertex(const Vertex& v);
+	std::vector<uint> vertexIndicesAroundFace( uint f_id );	
 
 	void computeBoundingBox();
 	void moveCenterToOrigin();
 	void translate(Vec3d delta);
+	void scale(double s);
 
 	void rotateUp( Vec3d to);
 	Vec3d upVec;
@@ -53,6 +54,7 @@ public:
 	std::vector<Point> clonePoints();
 	void setFromPoints(const std::vector<Point>& fromPoints);
 	void setFromNormals( const std::vector<Normal>& fromNormals );
+	void setFromOther(QSurfaceMesh * other);
 	std::vector< std::pair<Point, Point> > cloneEdges();
 
 	std::vector<Normal> cloneFaceNormals();
@@ -104,7 +106,6 @@ public:
 	std::vector<unsigned int> triangles, edges;
 
 	QString id;
-	bool isVisible;
 
 	std::vector<Vec3d> specialPnts;
 

@@ -5,7 +5,7 @@
 
 #include "Utility/Graph.h"
 
-#include "QSurfaceMesh.h"
+#include "GraphicsLibrary/Mesh/QSurfaceMesh.h"
 
 typedef Graph<int, double> SkeletonGraph;
 
