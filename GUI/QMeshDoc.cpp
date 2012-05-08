@@ -2,6 +2,7 @@
 #include "QMeshDoc.h"
 #include <QFileDialog>
 #include "Workspace.h"
+#include "MeshBrowser/MeshBrowserWidget.h"
 
 QMeshDoc::QMeshDoc( QObject * parent ) : QObject(parent)
 {
@@ -16,16 +17,20 @@ QMeshDoc::~QMeshDoc()
 
 void QMeshDoc::importObject()
 {
-	Workspace * workspace = (Workspace *) parent();
-
-	if(workspace->activeScene == NULL) return;
-
 	QString fileName = QFileDialog::getOpenFileName(0, "Import Mesh", DEFAULT_FILE_PATH, "Mesh Files (*.obj *.off *.stl)"); 
+
+	importObject(fileName);
+}
+
+void QMeshDoc::importObject(QString fileName)
+{
+	Workspace * workspace = (Workspace *) parent();
+	if(workspace->activeScene == NULL) return;
 
 	// Get object name from file path
 	QFileInfo fInfo (fileName);
 
-	if(!fInfo.exists())
+	if(!fileName.size() || !fInfo.exists())
 	{
 		emit(printMessage(QString("Error: invalid file (%1).").arg(fileName)));
 		return;
@@ -50,7 +55,7 @@ void QMeshDoc::importObject()
 	workspace->activeScene->setFocus();
 	workspace->activeScene->print(newObjId + " has been imported.");
 	workspace->activeScene->setActiveObject(newMesh);
-	
+
 	DEFAULT_FILE_PATH = QFileInfo(fileName).absolutePath();
 }
 
@@ -91,4 +96,12 @@ void QMeshDoc::exportObject(QSegMesh * mesh)
 	emit(printMessage(mesh->objectName() + " has been exported."));
 
 	DEFAULT_FILE_PATH = QFileInfo(fileName).absolutePath();
+}
+
+void QMeshDoc::importObjectBrowser()
+{
+	MeshBrowserWidget * browser = new MeshBrowserWidget;
+
+	if(browser->exec())
+		importObject(browser->selectedFile());
 }

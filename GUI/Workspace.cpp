@@ -25,6 +25,9 @@ Workspace::Workspace(QWidget *parent, Qt::WFlags flags)	: QMainWindow(parent, fl
 	// Connect to mesh management
 	connect(ui.actionImportObject, SIGNAL(triggered()), mDoc, SLOT(importObject()));
 
+	// Connect to mesh browser
+	connect(ui.actionMeshBrowser, SIGNAL(triggered()), mDoc, SLOT(importObjectBrowser()));
+
 	// Add new scene action
 	connect(ui.actionNewScene, SIGNAL(triggered()), SLOT(addNewScene()));
 

@@ -85,6 +85,8 @@
    </attribute>
    <addaction name="actionNewScene"/>
    <addaction name="separator"/>
+   <addaction name="actionMeshBrowser"/>
+   <addaction name="separator"/>
    <addaction name="actionImportObject"/>
   </widget>
   <widget class="QDockWidget" name="leftDock">
@@ -153,6 +155,15 @@
   <action name="actionCameraProjection">
    <property name="text">
     <string>Change camera projection</string>
+   </property>
+  </action>
+  <action name="actionMeshBrowser">
+   <property name="icon">
+    <iconset resource="../Workspace.qrc">
+     <normaloff>:/Workspace/Resources/icons/browse.ico</normaloff>:/Workspace/Resources/icons/browse.ico</iconset>
+   </property>
+   <property name="text">
+    <string>Mesh Browser</string>
    </property>
   </action>
  </widget>
