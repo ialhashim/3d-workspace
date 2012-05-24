@@ -165,17 +165,17 @@ Vec3d FFD::deformVertexLocal( const Vec3d & localPoint )
 	// From Explicit definition of Bézier curves
 	for (int k = 0; k <= U; k++)
 	{
-		int ck = C(U,k);
+		int ck = Coef(U,k);
 		double uk = pow(u,k) * pow(1-u, U-k);
 
 		for (int j = 0; j <= T; j++)
 		{
-			int cj = C(T,j);
+			int cj = Coef(T,j);
 			double tj = pow(t,j) * pow(1-t, T-j);
 
 			for (int i = 0; i <= S; i++)
 			{
-				int ci =  C(S,i);
+				int ci =  Coef(S,i);
 				double si = pow(s,i) * pow(1-s, S-i);
 
 				Vec3d controlPointPos = getLocalCoordinates(points[pointsGridIdx[i][j][k]]->pos);

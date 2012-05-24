@@ -89,12 +89,9 @@ VoxelDeformer::VoxelDeformer( QSurfaceMesh * fromMesh, double voxel_size )
 	{
 		StdVector<int> edges = voxler->cornerIndices[i];
 
-		for(int g = 0; g < edges.size(); g++)
-		{
+		for(int g = 0; g < edges.size(); g++){
 			for(int h = g+1; h < edges.size(); h++)
-			{
 				voxelGraph.AddEdge(edges[g], edges[h], 1);
-			}
 		}
 	}
 
@@ -106,7 +103,7 @@ VoxelDeformer::VoxelDeformer( QSurfaceMesh * fromMesh, double voxel_size )
 
 void VoxelDeformer::update()
 {
-	if(!cpnts.size()) return;
+	if(!cpnts.size() || selectedCorner < 0) return;
 
 	Vec3d delta = cpnts[selectedCorner]->pos - startPos[selectedCorner];
 
@@ -185,7 +182,7 @@ void VoxelDeformer::draw()
 	StdVector<Point> allPnts;
 	foreach(FFD * f, ffd)
 		foreach(QControlPoint * cp, f->points)
-		allPnts.push_back(cp->pos);
+			allPnts.push_back(cp->pos);
 
 	if(selectedCorner == -1)
 		SimpleDraw::IdentifyPoints(allPnts, Color(0.1,0,1,0.5), 4);

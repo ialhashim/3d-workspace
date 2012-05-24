@@ -40,7 +40,7 @@ public:
 	void update_ebo(uint *ebo, int ebo_size, const GLvoid *ebo_data);
 
 	// Rendering Vertex Buffer Object (VBO)
-	void render_regular(bool dynamic = false);
+	void render_regular( bool dynamic = false, bool isForceColor = false, Vec4d forceColor = Vec4d(1,1,1,0.5));
 	void render_wireframe(bool dynamic = false);
 	void render_vertices(bool dynamic = false);
 	void render_as_points(bool dynamic = false);

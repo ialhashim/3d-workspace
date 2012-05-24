@@ -214,8 +214,8 @@ void Smoother::MeanCurvatureFlow(QSurfaceMesh * m, int numIteration, double step
 					double cos_alpha = dot((p0 - p2).normalize(), (p1 - p2).normalize());
 					double cos_beta = dot((p0 - p3).normalize(), (p1 - p3).normalize());
 
-					cot_alpha = cos_alpha / sin(acos( cos_alpha ));
-					cot_beta = cos_beta / sin(acos( cos_beta ));
+					cot_alpha = cos_alpha / sin(acos( RANGED(-1.0, cos_alpha, 1.0) ));
+					cot_beta = cos_beta / sin(acos( RANGED(-1.0, cos_beta, 1.0) ));
 
 					cots = (cot_alpha + cot_beta) * 0.25 * dt;
 
@@ -355,8 +355,8 @@ void Smoother::MeanCurvatureFlowExplicit( QSurfaceMesh * m, int numIteration, do
 					double cos_alpha = dot(d0,d1);
 					double cos_beta = dot(d2,d3);
 
-					alpha = acos( cos_alpha );
-					beta = acos( cos_beta );
+					alpha = acos( RANGED(-1.0, cos_alpha, 1.0) );
+					beta = acos( RANGED(-1.0, cos_beta, 1.0) );
 
 					double cot_alpha = cos_alpha / sin(alpha);
 					double cot_beta = cos_beta / sin(beta);

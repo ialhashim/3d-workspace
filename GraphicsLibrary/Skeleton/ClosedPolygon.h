@@ -1,5 +1,7 @@
 #include "Vector.h"
 #include "Utility/Graph.h"
+#include "GraphicsLibrary/Basic/Line.h"
+#include "GraphicsLibrary/Basic/Plane.h"
 #include "GraphicsLibrary/SpacePartition/kdtree.h"
 typedef unsigned int uint;
 
@@ -16,6 +18,13 @@ public:
 	void close();
 	bool isClosed(int& i);
 
+	std::vector<Vec3d> getEqualDistancePoints(int numSides, const Vec3d& center);
+	void walk(double distance, double startTime, int index, double * destTime, int * destIndex);
+	void computeLengths();
+	std::vector<double> closedEdgeLen;
+	double closedLength;
+	double minEdgeLength;
+
 	KDTree points;
 	Vec3d center;
 
@@ -24,6 +33,10 @@ public:
 	int lastEdgeIndex;
 
 	std::map<int, Vec3d> allPoints;
+	Plane plane;
+	Vec3d vecUp, vecB;
+
+	std::vector<Line> lines,tempLines,allLines;
 	std::vector<Vec3d> closedPoints;
 	std::vector<Vec3d> unvisitedPoints;
 

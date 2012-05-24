@@ -2,6 +2,9 @@
 
 #include <algorithm>
 
+#include <QVector>
+#include <QMultiMap>
+
 Box3::Box3( Box3 &box )
 {
 	*this = box;
@@ -71,30 +74,34 @@ void Box3::makeRightHanded()
 // In ascending order
 void Box3::sort()
 {
-	// Sort extents
-	std::vector<double> ext;
-	ext.push_back(Extent[0]);
-	ext.push_back(Extent[1]);
-	ext.push_back(Extent[2]);
+	// Sorting by extents
+	typedef std::pair<double, int> ExtentID;
+	struct lessExtent{
+		bool operator () (ExtentID a, ExtentID b)
+		{ return a.first < b.first; }
+	} less_extent;
+
+	// Push into a vector, then sort
+	std::vector<ExtentID> extents;
+	for (int i = 0; i < 3; i++)
+		extents.push_back(ExtentID(Extent[i], i));
+	std::sort(extents.begin(), extents.end(), less_extent);
 	
-	std::vector<double> sortedExt = ext;
-	std::sort(sortedExt.begin(), sortedExt.end());
-
-	Extent = Vec3d(sortedExt[0], sortedExt[1], sortedExt[2]);
-
-	// Sorting indices
-	std::vector<int> indices;
-	foreach(double e, sortedExt)
-		indices.push_back(std::find(ext.begin(), ext.end(), e) - ext.begin());
-
-	// Sort axis
+	// Reassign extents and axis
 	std::vector<Vec3d> axisCopy = Axis;
-	Axis.clear();
-	foreach(int id, indices)
-		Axis.push_back(axisCopy[id]);
+	for (int i = 0; i < 3; i++)
+	{
+		Extent[i] = extents[i].first;
+		Axis[i] = axisCopy[extents[i].second];
+	}
 }
 
 Vec3d Box3::ClosestAxis( const Vec3d& v )
+{
+	return Axis[ClosestAxisID(v)];
+}
+
+int Box3::ClosestAxisID( const Vec3d& v )
 {
 	double maxDot = 0;
 	int bestID = 0;
@@ -108,5 +115,5 @@ Vec3d Box3::ClosestAxis( const Vec3d& v )
 		}
 	}
 
-	return Axis[bestID];
+	return bestID;
 }

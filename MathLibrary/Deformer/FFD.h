@@ -44,7 +44,7 @@ inline int fact(int x){
 	for (int i=1;i<=x;++i) f*=i;
 	return f;
 }
-inline int C(int a, int b){
+inline int Coef(int a, int b){
 	// return the aCb (binomial coefficients)
 	assert(a>=b);
 	return fact(a) / (fact(b) * fact(a-b));

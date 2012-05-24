@@ -3,7 +3,7 @@
 #include "Macros.h"
 #include "GraphicsLibrary/Mesh/QSegMesh.h"
 
-#include <QVector>
+#include <vector>
 
 #include <Eigen/Core>
 #include <Eigen/Eigenvalues>
@@ -13,7 +13,7 @@ using namespace Eigen;
 class PCA3
 {
 public:
-	PCA3(QVector<Point> points)
+	PCA3(std::vector<Point> points)
 	{
 		int n = points.size();
 		double x, y, z,	xx, yy, zz, xy, xz, yz,
@@ -60,9 +60,9 @@ public:
 		return E2V(e_values);
 	}
 
-	QVector<Vec3d> eigenvectors()
+	std::vector<Vec3d> eigenvectors()
 	{
-		QVector<Vec3d> vectors;
+		std::vector<Vec3d> vectors;
 		for (int i = 2;i >= 0;i--)
 		{
 			// Descending order

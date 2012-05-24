@@ -170,8 +170,8 @@ GCDeformation::GreenCoordiante GCDeformation::computeCoordinates(Vec3d point)
 
 double GCDeformation::GCTriInt(const Vec3d& p, const Vec3d& v1, const Vec3d& v2, const Vec3d& e)
 {
-	const double alpha = acos(dot((v2 - v1).normalized() , (p - v1).normalized()));
-	const double beta  = acos(dot((v1 - p ).normalized() , (v2 -p ).normalized()));
+	const double alpha = acos( RANGED(-1.0, dot((v2 - v1).normalized() , (p - v1).normalized()), 1.0) );
+	const double beta  = acos( RANGED(-1.0, dot((v1 - p ).normalized() , (v2 -p ).normalized()), 1.0) );
 	const double lambda = (p - v1).sqrnorm() * sin(alpha) * sin(alpha);
 	const double c      = (p - e).sqrnorm();
 	const double theta[2] = { M_PI - alpha, M_PI - alpha - beta };

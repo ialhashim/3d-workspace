@@ -12,5 +12,7 @@ class ColorMap{
   static void randColorMap(unsigned char *rgb,float value,float min,float max);
   static void grayColorMap(unsigned char *rgb,float value,float min,float max);
   static void blueColorMap(unsigned char *rgb,float value,float min,float max);
+  static void negativeColorMap(unsigned char *rgb,float value,float min,float max);
+  static void positiveColorMap(unsigned char *rgb,float value,float min,float max);
   static colorMapFunc selectColorMap(int cmp);
 };

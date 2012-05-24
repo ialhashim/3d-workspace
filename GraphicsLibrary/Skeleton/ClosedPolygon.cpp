@@ -1,4 +1,7 @@
 #include "ClosedPolygon.h"
+#include "GraphicsLibrary/Basic/PolygonArea.h"
+#include "Utility/Macros.h"
+
 
 ClosedPolygon::ClosedPolygon( const Vec3d& centerPoint, double epsilon)
 {
@@ -102,4 +105,121 @@ void ClosedPolygon::close()
 		for(std::list<uint>::iterator it = points.begin(); it != points.end(); it++)
 			closedPoints.push_back(allPoints[*it]);
 	}
+}
+
+void ClosedPolygon::computeLengths()
+{
+	int N = closedPoints.size();
+
+	closedLength = 0;
+
+	for(int i = 0; i < N; i++)
+	{
+		double dist = (closedPoints[(i+1) % N] - closedPoints[i]).norm();
+
+		minEdgeLength = Min(minEdgeLength, dist);
+
+		closedEdgeLen.push_back(dist);
+		closedLength += dist;
+	}
+}
+
+std::vector<Vec3d> ClosedPolygon::getEqualDistancePoints(int numSides, const Vec3d& center)
+{
+	std::vector<Vec3d> result;
+
+	int N = closedPoints.size();
+
+	if(N < 1)	return result; // empty polygon
+
+	for(int i = 0; i < N; i++)
+		lines.push_back(Line(closedPoints[i], closedPoints[(i+1) % N], i));
+
+	this->computeLengths();
+
+	// Distance to walk on polygon
+	double segmentLength = this->closedLength / numSides;
+
+	// Locate start point using vecUp
+	Vec3d startPoint;
+	int startIndex = 0;
+
+	Plane halfPlane(vecUp, center);
+	//testPlanes1.push_back(halfPlane);
+
+	double minDist = DBL_MAX;
+
+	// Test intersection with all lines and remember minimum one
+	for(int i = 0; i < N; i++)
+	{
+		Vec3d pointIntersect;
+
+		int res = halfPlane.LineIntersect(lines[i], pointIntersect);
+
+		if(res == INTERSECT || res == ENDPOINT_INTERSECT)
+		{
+			Vec3d toIntsect = pointIntersect - center;
+
+			if(toIntsect.norm() < minDist && dot(toIntsect, vecB) > 0)
+			{
+				minDist = toIntsect.norm();
+
+				startPoint = pointIntersect;
+				startIndex = i;
+			}
+		}
+	}
+
+	double t = lines[startIndex].timeAt(startPoint);
+	int index = startIndex;
+
+	// Compute equal-dist points on polygon
+	for(int s = 0; s < numSides; s++)
+	{
+		// Add new point
+		result.push_back(lines[index].pointAt(t));
+
+		walk(segmentLength, t, index, &t, &index);
+	}
+
+	// if polygon is opposite direction then reverse 
+	if( signedArea(result, plane.n, center) < 0 )
+	{
+		std::reverse(result.begin(), result.end());
+		std::rotate(result.begin(), result.begin()+result.size()-1 , result.end());
+	}
+
+	return closedPoints = result;
+}
+
+void ClosedPolygon::walk(double distance, double startTime, int index, double * destTime, int * destIndex)
+{
+	double remain = lines[index].lengthsAt(startTime).second;
+
+	// Case 1: the point is on the starting line
+	if(remain > distance)
+	{
+		double startLength = startTime * lines[index].length;
+		*destTime = (startLength + distance) / lines[index].length;
+		*destIndex = index;
+		return;
+	}
+
+	double walked = remain;
+
+	// Case 2: keep walking next lines
+	while(walked < distance)
+	{
+		index = (index + 1) % lines.size();		// step to next line
+		walked += lines[index].length;
+	}
+
+	// Step back to the start of this line
+	walked -= lines[index].length;
+
+	double remainDistance = distance - walked;
+	double endTime = remainDistance / lines[index].length;
+
+	*destTime = endTime;
+	*destIndex = index;
 }

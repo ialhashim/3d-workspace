@@ -22,6 +22,7 @@ public:
 	Vec3d ClosestPoint(const Vec3d& p);
 	void ClosestSegment( Box3 other, Vec3d & p, Vec3d & q);
 	Vec3d ClosestAxis( const Vec3d& v );
+	int ClosestAxisID( const Vec3d& v );
 
 public:
 	Point Center;

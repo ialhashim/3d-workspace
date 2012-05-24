@@ -24,17 +24,19 @@ public:
 
 	void deform();
 	std::vector<double> getCoordinate(Point p);
-	Point fromCoordinates(std::vector<double> coords);
+	Point fromCoordinates(std::vector<double> &coords);
+	bool atEnd( Point p );
+	Point closestProjection(Point v);
 
 private:
-	SkinningCoord	computeCoordinates(Point v);
-	Point			fromCoordinates(SkinningCoord coords);
+	SkinningCoord	computeCoordinates(GeneralizedCylinder *gc,  Point& v);
+	Point			fromCoordinates(GeneralizedCylinder &orig_gc, SkinningCoord coords);
 	void			computeMeshCoordinates();
 	Matrix3d		rotationOfCurve(int cid);
 
 private:
 	QSurfaceMesh * mesh;
-	GeneralizedCylinder * gc;
+	GeneralizedCylinder * currGC;
 	GeneralizedCylinder origGC;
 	std::vector< SkinningCoord > coordinates;
 };

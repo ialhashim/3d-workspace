@@ -167,6 +167,7 @@ void QSegMesh::read( QString fileName )
 				inF.seekg(-(int)str.size(), std::ios::cur);
 			}
 
+			// Assign face segments
 			std::vector<int> faceSeg(mesh.n_faces());
 			int fid, sid;
 			for (int i=0;i<(int)mesh.n_faces()&&inF;i++)
@@ -181,7 +182,6 @@ void QSegMesh::read( QString fileName )
 			{
 				segment.push_back(new QSurfaceMesh());
 			}
-
 
 			// Create unique vertex set for each segment
 			std::vector< std::set <Surface_mesh::Vertex> > segVertices(nbSeg);
@@ -205,8 +205,9 @@ void QSegMesh::read( QString fileName )
 
 			for (int i=0;i<nbSeg;i++)
 			{
-				std::set<Surface_mesh::Vertex>::iterator vit, vend = segVertices[i].end();
 				int j = 0;
+
+				std::set<Surface_mesh::Vertex>::iterator vit, vend = segVertices[i].end();
 				for (vit=segVertices[i].begin(); vit!=vend; vit++, j++)
 				{
 					segment[i]->add_vertex(mesh.getVertexPos(*vit));
@@ -229,7 +230,6 @@ void QSegMesh::read( QString fileName )
 
 				segment[sid]->add_face(vertices);
 			}
-
 		}
 	}
 
@@ -570,7 +570,7 @@ void QSegMesh::rotateAroundUp( double theta )
 
 void QSegMesh::rotateUp( Vec3d to )
 {
-	double theta = acos(dot(upVec, to));
+	double theta = acos(RANGED(-1.0, dot(upVec, to), 1.0));
 	if(theta == 0)	return;
 	Vec3d axis = cross(upVec, to).normalized();
 

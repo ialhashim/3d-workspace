@@ -80,6 +80,7 @@ public:
 	QMap<QString, std::vector< std::vector<double> > > data2D;
 	QMap<QString, void*> ptr;
 	QMap<QString, double> val;
+	QMap<QString, Vec3d> vec;
 
 private:
 	std::vector<QSurfaceMesh*> segment;

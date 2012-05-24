@@ -57,11 +57,11 @@ static inline double findNormal3D(int n, double *x, double *y, double *z, double
 	return nlen;    // area of polygon = length of Newell normal
 }
 
-static inline Vec centerOfPoints(const Vector<Vec>& points)
+static inline Vec3d centerOfPoints(const std::vector<Vec3d>& points)
 {
-	Vec center;
+	Vec3d center;
 
-	for(Vector<Vec>::const_iterator it = points.begin(); it != points.end(); it++)
+	for(std::vector<Vec3d>::const_iterator it = points.begin(); it != points.end(); it++)
 		center += *it;
 
 	center /= points.size();
@@ -69,58 +69,58 @@ static inline Vec centerOfPoints(const Vector<Vec>& points)
 	return center;
 }
 
-static inline double findArea3D(const Vector<Vec>& points, const Vec& n)
+static inline double findArea3D(const std::vector<Vec3d>& points, const Vec3d& n)
 {
 	int N = points.size();
 
-	Vector<double> x(N), y(N), z(N);
+	std::vector<double> x(N), y(N), z(N);
 
 	for(int i = 0; i < N; i++)
 	{
-		x[i] = points[i].x;
-		y[i] = points[i].y;
-		z[i] = points[i].z;
+		x[i] = points[i].x();
+		y[i] = points[i].y();
+		z[i] = points[i].z();
 	}
 
 	double * X = &x.front();
 	double * Y = &y.front();
 	double * Z = &z.front();
 
-	double area = findArea3D(N, X, Y, Z, n.x, n.y, n.z);
+	double area = findArea3D(N, X, Y, Z, n.x(), n.y(), n.z());
 
 	return area;
 }
 
-static inline double findNormal3D(const Vector<Vec>& points, Vec& n)
+static inline double findNormal3D(const std::vector<Vec3d>& points, Vec3d& n)
 {
 	int N = points.size();
 
-	Vector<double> x(N), y(N), z(N);
+	std::vector<double> x(N), y(N), z(N);
 
 	for(int i = 0; i < N; i++)
 	{
-		x[i] = points[i].x;
-		y[i] = points[i].y;
-		z[i] = points[i].z;
+		x[i] = points[i].x();
+		y[i] = points[i].y();
+		z[i] = points[i].z();
 	}
 
 	double * X = &x.front();
 	double * Y = &y.front();
 	double * Z = &z.front();
 
-	return findNormal3D(N, X, Y, Z, &n.x, &n.y, &n.z);
+	return findNormal3D(N, X, Y, Z, &n.x(), &n.y(), &n.z());
 }
 
-static inline double signedArea(const Vector<Vec>& points, const Vec& n, const Vec& center)
+static inline double signedArea(const std::vector<Vec3d>& points, const Vec3d& n, const Vec3d& center)
 {
 	int N = points.size();
-	Vec sumVec;
+	Vec3d sumVec;
 
 	for(int i = 0; i < N; i++)
 	{
 		int j = NEXT(i, N);
-		sumVec += ((points[i]-center) ^ (points[j]-center));
+		sumVec += cross((points[i]-center),(points[j]-center));
 	}
 
-	return sumVec * n;
+	return dot(sumVec, n);
 }

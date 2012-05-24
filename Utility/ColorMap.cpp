@@ -68,7 +68,7 @@ void ColorMap::blueColorMap(unsigned char *rgb,float value,float min,float max)
 	else {rgb[0]=rgb[1]=0;rgb[2]=255;}
 }
 
-void positiveColorMap(unsigned char *rgb,float value,float min,float max)
+void ColorMap::positiveColorMap(unsigned char *rgb,float value,float min,float max)
 
 {
 	value-=min;
@@ -91,7 +91,7 @@ void positiveColorMap(unsigned char *rgb,float value,float min,float max)
 		rgb[2]+=(unsigned char)(255*2*(value-0.5));
 }
 
-void negativeColorMap(unsigned char *rgb,float value,float min,float max)
+void ColorMap::negativeColorMap(unsigned char *rgb,float value,float min,float max)
 {
 	value-=min;
 

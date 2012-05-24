@@ -762,7 +762,7 @@ void QSurfaceMesh::translate( Vec3d delta )
 void QSurfaceMesh::rotateUp( Vec3d to)
 {
 	// Compute rotation of current 'upVec' to vector 'to'
-	double theta = acos(dot(upVec, to));
+	double theta = acos(RANGED(-1.0, dot(upVec, to), 1.0));
 
 	if(theta == 0)	return;
 

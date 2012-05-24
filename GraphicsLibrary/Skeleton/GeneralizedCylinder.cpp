@@ -153,3 +153,4 @@ void GeneralizedCylinder::realignCrossSections()
 		crossSection[i].n = frames.U[i].t;
 	}
 }
+

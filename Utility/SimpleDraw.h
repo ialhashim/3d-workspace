@@ -50,8 +50,8 @@ public:
 	static void IdentifyArrow(const Vec3d& start, const Vec3d& end, float lineWidth = 2.0, float r = 1.0, float g = 0.2f, float b = 0.2f);
 	static void IdentifyArrows(StdVector<Vec3d> & starts, StdVector<Vec3d> & ends, float lineWidth = 2.0, float r = 1.0, float g = 0.2f, float b = 0.2f);
 
-	static void DrawArrow(Vec3d from, Vec3d to, bool isForward = true, bool isFilledBase = true);
-	static void DrawArrowDirected(const Vec3d& pos, const Vec3d& normal, float height = 1.0, bool isForward = true, bool isFilledBase = true);
+	static void DrawArrow(Vec3d from, Vec3d to, bool isForward = true, bool isFilledBase = true, float width = 1.0);
+	static void DrawArrowDirected(const Vec3d& pos, const Vec3d& normal, float height = 1.0, bool isForward = true, bool isFilledBase = true, float width = 1.0);
 	static void DrawArrowDoubleDirected(const Vec3d& pos, const Vec3d& normal, float height = 1.0, bool isForward = true, bool isFilledBase = true);
 
 	static void PointArrowAt(Vec3d point, float radius = 1.0);

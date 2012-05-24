@@ -147,7 +147,7 @@ template <typename VECTYPE>
 void inline RotateFromTo(VECTYPE from, VECTYPE to, VECTYPE & point, VECTYPE pivot = VECTYPE(0,0,0))
 {
 	VECTYPE axis = cross(from, to).normalized();
-	double theta = acos(dot(from.normalize(), to.normalize()));
+	double theta = acos( RANGED(-1.0, dot(from.normalize(), to.normalize()), 1.0) );
 
 	point -= pivot;
 	point = ROTATE_VEC(point, theta, axis);
