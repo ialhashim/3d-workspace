@@ -41,7 +41,7 @@ extern double Epsilon;
 #define StdList std::list
 #define StdMap std::map
 #define StdSet std::set
-#define Stack std::stack
+#define StdStack std::stack
 #define StdString std::string
 #define PairInt std::pair<int,int>
 #define Pair std::pair
