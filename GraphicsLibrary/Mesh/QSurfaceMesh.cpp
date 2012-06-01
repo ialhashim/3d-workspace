@@ -198,9 +198,21 @@ void QSurfaceMesh::simpleDraw(bool isColored, bool isDots)
 	glEnd();
 }
 
-void QSurfaceMesh::drawFaceNames()
+void QSurfaceMesh::drawFaceNames(uint offset)
 {
-	// TODO:
+	Face_iterator fit, fend = faces_end();
+	uint i = 0;
+
+	for(fit = faces_begin(); fit != fend; ++fit){
+		glPushName(offset + i++);
+		glBegin(GL_TRIANGLES);
+
+		foreach(Vec3d p, facePoints(fit))
+			glVertex3dv(p);
+
+		glEnd();
+		glPopName();
+	}
 }
 
 void QSurfaceMesh::drawFacesUnique(uint offset)
@@ -634,6 +646,17 @@ void QSurfaceMesh::setFromNormals( const std::vector<Normal>& fromNormals )
 
 	for(vit = vertices_begin(); vit != vend; ++vit)
 		normals[vit] = fromNormals[Vertex(vit).idx()];
+}
+
+std::vector<Surface_mesh::Vertex> QSurfaceMesh::verticesAroundVertex( const Vertex& v )
+{
+	std::vector<Vertex> result;
+
+	Vertex_around_vertex_circulator vit, vend;
+	vit = vend = vertices(v);
+	do{ result.push_back(vit); ++vit;} while(vit != vend);
+
+	return result;
 }
 
 std::set<uint> QSurfaceMesh::vertexIndicesAroundVertex( const Vertex& v )

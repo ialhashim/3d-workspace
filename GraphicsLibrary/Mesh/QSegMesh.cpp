@@ -285,8 +285,8 @@ void QSegMesh::insertCopyMesh(QSurfaceMesh * newSegment)
 void QSegMesh::build_up()
 {
 	computeBoundingBox();
-	moveCenterToOrigin();
-	normalize();
+	if(MOVE_CENTER_TO_ORIGIN) moveCenterToOrigin();
+	if(NORMALIZE_MESH) normalize();
 	computeBoundingBox();
 
 	update_face_normals();
@@ -412,6 +412,16 @@ void QSegMesh::simpleDraw( bool isColored /*= true*/, bool isDots /*= false*/ )
 	// Render mesh regularly (inefficient)
 	for (int i = 0;i < (int)segment.size(); i++)
 		segment[i]->simpleDraw(isColored, isDots);
+}
+
+void QSegMesh::drawFacesNames()
+{
+	uint offset = 0;
+	for (int i=0;i<(int)segment.size();i++)
+	{
+		segment[i]->drawFaceNames(offset);
+		offset += segment[i]->n_faces();
+	}
 }
 
 void QSegMesh::drawFacesUnique()

@@ -35,6 +35,7 @@ public:
 
 	// Draw
 	void simpleDraw(bool isColored = true, bool isDots = false);
+	void drawFacesNames();
 	void drawFacesUnique();
 	void drawDebug();
 	void drawAABB();
@@ -87,5 +88,4 @@ private:
 	
 	// This is useful for segmented OBJs
 	void checkObjSegmentation ( QString fileName, QString segFilename);
-
 };

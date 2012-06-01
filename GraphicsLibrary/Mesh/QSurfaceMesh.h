@@ -29,6 +29,7 @@ public:
 	std::set<uint> faceIndicesAroundVertex(const Vertex& v);
 	std::set<uint> vertexIndicesAroundVertex(const Vertex& v);
 	std::vector<uint> vertexIndicesAroundFace( uint f_id );	
+	std::vector<Surface_mesh::Vertex> verticesAroundVertex( const Vertex& v );
 
 	void computeBoundingBox();
 	void moveCenterToOrigin();
@@ -59,7 +60,7 @@ public:
 
 	std::vector<Normal> cloneFaceNormals();
 
-	void drawFaceNames();
+	void drawFaceNames(uint offset = 0);
 	void drawFacesUnique(uint offset);
 	void drawDebug();
 	void simpleDraw(bool isColored = true, bool isDots = false);
@@ -102,7 +103,6 @@ public:
 	Vec3d getBaryFace( Face f, double U, double V );
 	void fillTrianglesList();
 	std::vector<unsigned int> cloneTriangleIndices();
-
 	std::vector<unsigned int> triangles, edges;
 
 	QString id;
