@@ -40,7 +40,7 @@ private:
 	Surface_mesh::Vertex_around_vertex_circulator vvit, vvend;
 
 	SparseMatrix<double> At;
-	SimplicialLLt< SparseMatrix<double> > solver;
+	SimplicialLLT< SparseMatrix<double> > solver;
 	bool isSolverReady;
 
 public:

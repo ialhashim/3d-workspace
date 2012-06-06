@@ -510,7 +510,7 @@ void RotInvDeform::Solve()
 
 	UpdateRHSRot();
 
-	SimplicialLLt< SparseMatrix<double> > rot_solver(RotA);
+	SimplicialLLT< SparseMatrix<double> > rot_solver(RotA);
 	std::vector<VectorXd> rot(3, VectorXd::Zero(nVerts*3));
 
 	// Solve for each basis
@@ -540,7 +540,7 @@ void RotInvDeform::Solve()
 	UpdateRHSPos();
 	
 	// Solve
-	SimplicialLLt< SparseMatrix<double> > pos_solver(PosA);
+	SimplicialLLT< SparseMatrix<double> > pos_solver(PosA);
 	std::vector<VectorXd> pos(3, VectorXd::Zero(nVerts));
 
 	for(int i = 0; i < 3; i++)
