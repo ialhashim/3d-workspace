@@ -15,6 +15,11 @@ VBO::VBO( unsigned int vert_count, const PointType * v, const NormalType * n, co
 
 	indices = faces;
 
+    #ifndef _WIN32
+    if (GLEW_OK != glewInit())
+        exit(1);
+    #endif
+
 	// If VBO is supported, enable it
 	if(GLEE_ARB_vertex_buffer_object)
 		isVBOEnabled = true;

@@ -1,6 +1,6 @@
 #include "SimpleDraw.h"
 #include "Macros.h"
-#include <GL/glu.h>
+//#include <GL/glu.h>
 
 // Bad includes.. needed for rotations for now
 #include "GUI/Viewer/libQGLViewer/QGLViewer/qglviewer.h"

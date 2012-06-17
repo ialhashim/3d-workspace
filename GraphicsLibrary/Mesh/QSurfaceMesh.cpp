@@ -663,9 +663,11 @@ std::set<uint> QSurfaceMesh::vertexIndicesAroundVertex( const Vertex& v )
 {
 	std::set<uint> result;
 
+    Vertex vj;
 	Vertex_around_vertex_circulator vit, vend;
 	vit = vend = vertices(v);
-	do{ result.insert(Vertex(vit).idx()); ++vit;} while(vit != vend);
+
+    do{ vj = vit; result.insert(vj.idx()); ++vit;} while(vit != vend);
 
 	return result;
 }
@@ -674,9 +676,10 @@ std::set<uint> QSurfaceMesh::faceIndicesAroundVertex( const Vertex& v )
 {
 	std::set<uint> result;
 
+    Face fj;
 	Face_around_vertex_circulator fit, fend;
 	fit = fend = faces(v);
-	do{ result.insert(Face(fit).idx()); ++fit; } while(fit != fend);
+    do{ fj = fit; result.insert(fj.idx()); ++fit; } while(fit != fend);
 
 	return result;
 }

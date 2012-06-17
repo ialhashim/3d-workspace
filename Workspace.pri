@@ -1,7 +1,6 @@
 HEADERS += ./MathLibrary/Bounding/BoundingBox.h \
     ./Utility/ColorMap.h \
     ./GraphicsLibrary/Sampling/EdgeSampler.h \
-    ./GL/GLee.h \
     ./Utility/Graph.h \
     ./Utility/HashTable.h \
     ./GraphicsLibrary/Mesh/SurfaceMesh/IO_.h \
@@ -34,10 +33,12 @@ HEADERS += ./MathLibrary/Bounding/BoundingBox.h \
     ./GraphicsLibrary/Mesh/QSurfaceMesh.h \
     ./GUI/Scene.h \
     ./GUI/Tools/TransformationPanel.h \
-    ./GUI/Workspace.h
+    ./GUI/Workspace.h \
+    GUI/MeshBrowser/QuickMeshViewer.h \
+    GUI/MeshBrowser/QuickMesh.h \
+    GUI/MeshBrowser/MeshBrowserWidget.h
 SOURCES += ./MathLibrary/Bounding/BoundingBox.cpp \
     ./Utility/ColorMap.cpp \
-    ./GL/GLee.c \
     ./GraphicsLibrary/Mesh/SurfaceMesh/IO_.cpp \
     ./GraphicsLibrary/Mesh/SurfaceMesh/IO_obj.cpp \
     ./GraphicsLibrary/Mesh/SurfaceMesh/IO_off.cpp \
@@ -61,8 +62,11 @@ SOURCES += ./MathLibrary/Bounding/BoundingBox.cpp \
     ./GUI/Workspace.cpp \
     ./GUI/global.cpp \
     ./GraphicsLibrary/SpacePartition/kdtree.cpp \
-    ./GUI/main.cpp
+    ./GUI/main.cpp \
+    GUI/MeshBrowser/QuickMeshViewer.cpp \
+    GUI/MeshBrowser/MeshBrowserWidget.cpp
 FORMS += ./GUI/Tools/MeshInfo.ui \
     ./GUI/Tools/RotationWidget.ui \
-    ./GUI/Workspace.ui
+    ./GUI/Workspace.ui \
+    GUI/MeshBrowser/MeshBrowserForm.ui
 RESOURCES += Workspace.qrc

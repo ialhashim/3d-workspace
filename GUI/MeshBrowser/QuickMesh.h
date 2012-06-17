@@ -5,6 +5,7 @@
 #include <QFile>
 #include <QTextStream>
 #include <qgl.h>
+#include <float.h>
 
 class QuickMesh : public QObject{
 	Q_OBJECT
