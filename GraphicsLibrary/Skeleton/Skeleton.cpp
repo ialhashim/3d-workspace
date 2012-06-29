@@ -19,6 +19,31 @@ Skeleton::~Skeleton()
 
 }
 
+void Skeleton::saveToFile(const char* fileName)
+{
+	std::ofstream file(fileName);
+
+	// Skeleton header
+	file << "# D:3 NV:" << nodes.size() << " NE:" << edges.size() <<"\n";
+	
+	// Save Skeleton Nodes
+	for(int i = 0; i < (int)nodes.size(); i++)
+		file << "v " << nodes[i].x() << " " << nodes[i].y() << " " << nodes[i].z() << "\n";
+	
+	for(int i = 0; i < (int)edges.size(); i++)
+		file << "e " << (edges[i].n1->index + 1) << " " << (edges[i].n2->index + 1) << "\n";
+
+	// Correspondence file
+	if(v_corr.size() > 0){
+		std::string cfileName = fileName; 
+		cfileName += ".corr.txt";
+		std::ofstream cfile(cfileName);
+
+		for(int i = 0; i < v_corr.size(); i++)
+			cfile << v_corr[i] << "\n";
+	}
+}
+
 void Skeleton::loadFromFile(const char* fileName)
 {
 	printf("\n\n==================\n");

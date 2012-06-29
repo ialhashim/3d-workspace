@@ -27,10 +27,11 @@ public:
 	std::map<int, int> v_corr;				// vertex index -> Node
 	std::map<int, int> f_corr;				// face index -> Node
 
-	// DATA LOADING
+	// DATA LOADING / SAVING
 	void loadFromFile(const char* fileName);
 	void loadCorrespondenceFile(const char* fileName);
 	void postSkeletonLoad();
+	void saveToFile(const char* fileName);
 
 	// COMPUTATIONS
 	void calculateEdgesLengths();

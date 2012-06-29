@@ -129,7 +129,7 @@ Eigen::SparseMatrix<double> SkeletonExtract::BuildMatrixA()
 	Surface_mesh::Vertex_property< std::set<uint> > adjVF = mesh.vertex_property< std::set<uint> >("v:adjVF");
 
 	// Use dynamic sparse matrix only when filling
-	Eigen::DynamicSparseMatrix<double> matA(3 * n, n);
+	Eigen::SparseMatrix<double> matA(3 * n, n);
 
 	std::vector<double> areaRatio (fn);
 	std::vector<double> collapsed (n);
@@ -223,7 +223,7 @@ void SkeletonExtract::ImplicitSmooth()
 	std::vector<Point> newPos = mesh.clonePoints();
 	std::vector<Point> oldPos = newPos;
 
-	Eigen::SparseLU<Eigen::SparseMatrix<double>, Eigen::UmfPack> lu_of_ATA(ATA);
+	Eigen::SimplicialLLT< Eigen::SparseMatrix<double> > solver(ATA);
 
 	// for each of axis 'x' 'y' 'z'
 	for (uint i = 0; i < 3; i++)
@@ -237,7 +237,7 @@ void SkeletonExtract::ImplicitSmooth()
 
 		// Solve A * x = b
 		ATb = A.transpose() * b;
-		lu_of_ATA.solve(ATb, &x);
+		x = solver.solve(ATb);
 
 		for (uint j = 0; j < n; j++)
 			newPos[j][i] = x[j];
