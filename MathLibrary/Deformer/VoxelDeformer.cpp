@@ -193,7 +193,7 @@ void VoxelDeformer::draw()
 StdVector<double> VoxelDeformer::computeNormalizedDistance(int startCornerIndex)
 {
 	StdVector<double> dists;
-	double maxDist = DBL_MIN;
+	double maxDist = -DBL_MAX;
 
 	for(int i = 0; i < cpnts.size(); i++)
 	{

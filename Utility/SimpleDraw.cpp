@@ -978,7 +978,7 @@ void SimpleDraw::DrawGraph2D( const StdVector< StdVector <double> > & data, doub
 	double q = 1.0 / Max(w,h);
 
 	// Find actual data max
-	double actualMax = DBL_MIN;
+	double actualMax = -DBL_MAX;
 	for(int i = 0; i < (int)data.size(); i++)
 		actualMax = Max(actualMax, MaxElement(data[i]));
 

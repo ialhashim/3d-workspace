@@ -40,7 +40,7 @@ BoundingBox& BoundingBox::operator=( const BoundingBox& other )
 void BoundingBox::computeFromTris( const StdVector<BaseTriangle*>& tris )
 {
 	vmin = Vec3d(DBL_MAX, DBL_MAX, DBL_MAX);
-	vmax = Vec3d(DBL_MIN, DBL_MIN, DBL_MIN);
+	vmax = Vec3d(-DBL_MAX, -DBL_MAX, -DBL_MAX);
 
 	double minx = 0, miny = 0, minz = 0;
 	double maxx = 0, maxy = 0, maxz = 0;
