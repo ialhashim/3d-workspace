@@ -36,7 +36,8 @@ HEADERS += ./MathLibrary/Bounding/BoundingBox.h \
     ./GUI/Workspace.h \
     GUI/MeshBrowser/QuickMeshViewer.h \
     GUI/MeshBrowser/QuickMesh.h \
-    GUI/MeshBrowser/MeshBrowserWidget.h
+    GUI/MeshBrowser/MeshBrowserWidget.h \
+    GL/GLee.h
 SOURCES += ./MathLibrary/Bounding/BoundingBox.cpp \
     ./Utility/ColorMap.cpp \
     ./GraphicsLibrary/Mesh/SurfaceMesh/IO_.cpp \
@@ -64,7 +65,8 @@ SOURCES += ./MathLibrary/Bounding/BoundingBox.cpp \
     ./GraphicsLibrary/SpacePartition/kdtree.cpp \
     ./GUI/main.cpp \
     GUI/MeshBrowser/QuickMeshViewer.cpp \
-    GUI/MeshBrowser/MeshBrowserWidget.cpp
+    GUI/MeshBrowser/MeshBrowserWidget.cpp \
+    GL/GLee.c
 FORMS += ./GUI/Tools/MeshInfo.ui \
     ./GUI/Tools/RotationWidget.ui \
     ./GUI/Workspace.ui \
