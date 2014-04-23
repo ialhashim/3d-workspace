@@ -13,7 +13,7 @@ public:
 		std::vector<double> weights(npts);
 
 		// arrays storing point-to-vertex vectors and distances
-		std::vector<double> dist(npts);
+		std::vector<double> dist(npts,0);
 		std::vector<Vec3d> uVec(npts);
 		static const double eps = 0.00000001;
 
