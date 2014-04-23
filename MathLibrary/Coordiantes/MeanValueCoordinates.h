@@ -10,7 +10,7 @@ public:
 		int npts = mesh->n_vertices();
 
 		// Initializing weights
-		std::vector<double> weights(npts);
+		std::vector<double> weights(npts,0);
 
 		// arrays storing point-to-vertex vectors and distances
 		std::vector<double> dist(npts,0);
