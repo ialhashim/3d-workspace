@@ -1,4 +1,5 @@
 #pragma once
+// Code by Ryan Schmidt http://www.dgp.toronto.edu/~rms/software/libgeometry/index.html
 
 #include "GraphicsLibrary/Mesh/QSurfaceMesh.h"
 #include "Frame3.h"
