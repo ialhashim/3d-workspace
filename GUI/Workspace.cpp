@@ -3,7 +3,7 @@
 #include <QVBoxLayout>
 #include <QFileInfo>
 
-Workspace::Workspace(QWidget *parent, Qt::WFlags flags)	: QMainWindow(parent, flags)
+Workspace::Workspace(QWidget *parent, Qt::WindowFlags flags)	: QMainWindow(parent, flags)
 {
 	activeScene = NULL;
 	sceneCount = 0;

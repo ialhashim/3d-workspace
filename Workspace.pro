@@ -11,7 +11,7 @@ INCLUDEPATH += ./GeneratedFiles \
 include(Workspace.pri)
 
 win32{
-        LIBS += -L$$PWD"/GUI/Viewer/libQGLViewer/QGLViewer/lib" \
+        LIBS += -L$$PWD"/../libQGLViewer/QGLViewer" \
         -lopengl32 \
         -lglu32
 

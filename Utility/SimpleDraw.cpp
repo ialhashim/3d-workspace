@@ -3,7 +3,7 @@
 //#include <GL/glu.h>
 
 // Bad includes.. needed for rotations for now
-#include "GUI/Viewer/libQGLViewer/QGLViewer/qglviewer.h"
+#include "../libQGLViewer/QGLViewer/qglviewer.h"
 #include "ColorMap.h"
 
 void SimpleDraw::DrawBox(const Vec3d& center, float width, float length, float height, float r, float g, float b, float lineWidth)

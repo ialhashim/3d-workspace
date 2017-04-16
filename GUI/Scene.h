@@ -6,7 +6,7 @@
 
 #include "Utility/Macros.h"
 
-#include "GUI/Viewer/libQGLViewer/QGLViewer/qglviewer.h"
+#include "../libQGLViewer/QGLViewer/qglviewer.h"
 using namespace qglviewer;
 
 #include "GL/VBO/VBO.h"
@@ -23,7 +23,7 @@ class Scene : public QGLViewer{
 	Q_OBJECT
 
 public:
-	Scene(QWidget * parent = 0, const QGLWidget * shareWidget = 0, Qt::WFlags flags = 0);
+    Scene(QWidget * parent = 0, const QGLWidget * shareWidget = 0, Qt::WindowFlags flags = 0);
 
 	// Setup scene
 	virtual void init();

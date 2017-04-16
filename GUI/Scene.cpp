@@ -4,7 +4,9 @@
 #include "Scene.h"
 #include "Utility/SimpleDraw.h"
 
-Scene::Scene( QWidget * parent, const QGLWidget * shareWidget, Qt::WFlags flags) : QGLViewer(parent, shareWidget, flags)
+#include "../libQGLViewer/QGLViewer/manipulatedFrame.h"
+
+Scene::Scene(QWidget * parent, const QGLWidget * shareWidget, Qt::WindowFlags flags) : QGLViewer(parent, shareWidget, flags)
 {
 	activeMesh = NULL;
 
@@ -239,7 +241,7 @@ void Scene::postDraw()
 		int y = (i * QFont().pointSize() * 1.5f) + margin;
 
 		qglColor(Qt::white);
-		renderText(x, y, osdMessages.at(i));
+		//renderText(x, y, osdMessages.at(i)); // Bug causing a crash
 	}
 
 	QGLViewer::postDraw();

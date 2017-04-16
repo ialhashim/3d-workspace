@@ -1,6 +1,6 @@
 #include "global.h"
 #include "Workspace.h"
-#include <QtGui/QApplication>
+#include <QApplication>
 #include <QGLFormat>
 #include <QApplication>
 #include <QDesktopWidget>

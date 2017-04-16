@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GUI/Viewer/libQGLViewer/QGLViewer/qglviewer.h"
+#include "../libQGLViewer/QGLViewer/qglviewer.h"
 using namespace qglviewer;
 #define GL_MULTISAMPLE 0x809D
 
